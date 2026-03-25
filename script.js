@@ -2,6 +2,32 @@
    HARURI - Main JavaScript
    ============================================================ */
 
+// ===== Loading Screen =====
+(function() {
+  var screen = document.getElementById('loading-screen');
+  if (!screen) return;
+
+  // 闃ｱ縺ｳ繧臥函謌・  var lp = document.getElementById('loadingPetals');
+  if (lp) {
+    for (var i = 0; i < 12; i++) {
+      var p = document.createElement('div');
+      p.className = 'loading-petal';
+      var size = 7 + Math.random() * 10;
+      var hue  = 318 + Math.random() * 42;
+      p.style.cssText = 'width:'+size+'px;height:'+size+'px;left:'+(Math.random()*100)+'vw;animation-duration:'+(7+Math.random()*8)+'s;animation-delay:'+(Math.random()*3)+'s;background:radial-gradient(circle at 38% 38%,hsla('+hue+',70%,82%,0.9),hsla('+hue+',58%,70%,0.6));';
+      lp.appendChild(p);
+    }
+  }
+
+  // 2.5遘貞ｾ後↓繝輔ぉ繝ｼ繝峨い繧ｦ繝遺・DOM蜑企勁
+  setTimeout(function() {
+    screen.classList.add('hide');
+    setTimeout(function() {
+      if (screen && screen.parentNode) screen.parentNode.removeChild(screen);
+    }, 750);
+  }, 2500);
+})();
+
 // ===== Hamburger =====
 
 
@@ -135,13 +161,13 @@ const mediaContent = {
     <div class="modal-thumb yt">?</div>
     <h3>YouTube Making Process</h3>
     <p>Watch the making process of resin accessories and plush clothes.<br>From material selection to completion.</p>
-    <a class="modal-link" href="https://youtube.com" target="_blank">�� YouTubeView Channel</a>
+    <a class="modal-link" href="https://youtube.com" target="_blank">→ YouTubeView Channel</a>
   `,
   tiktok: `
-    <div class="modal-thumb tk">��</div>
+    <div class="modal-thumb tk">♪</div>
     <h3>TikTok Livelive</h3>
     <p>TikTokLive streams and short making videos.<br>Enjoy real-time interaction!</p>
-    <a class="modal-link" href="https://tiktok.com" target="_blank">�� TikTok View</a>
+    <a class="modal-link" href="https://tiktok.com" target="_blank">→ TikTok View</a>
   `,
 };
 function openModal(type) {
