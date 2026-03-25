@@ -11,7 +11,6 @@
 </head>
 <body>
 
-  <!-- ===== HEADER ===== -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="logo-link">
@@ -37,7 +36,6 @@
     </div>
   </header>
 
-  <!-- ===== PAGE HERO ===== -->
   <section class="page-hero page-hero--list">
     <div class="gallery-hero-inner">
       <h1 class="gallery-big-title">
@@ -46,89 +44,111 @@
     </div>
   </section>
 
-  <!-- ===== LIST MAIN ===== -->
   <main class="list-main">
 
-    <!-- カテゴリタブ -->
-    <div class="list-tabs">
-      <button class="list-tab active" data-cat="all">ピアス</button>
+    <!-- タブ -->
+    <div class="list-tabs" id="listTabs">
+      <button class="list-tab active" data-cat="pierce">ピアス</button>
       <button class="list-tab" data-cat="nuifuku">ぬい服</button>
-      <button class="list-tab" data-cat="nuikomonom">ぬい小物</button>
+      <button class="list-tab" data-cat="nuikomono">ぬい小物</button>
       <button class="list-tab" data-cat="ring">リング</button>
       <button class="list-tab" data-cat="accessory">アクセサリー</button>
       <button class="list-tab" data-cat="other">その他</button>
     </div>
 
+    <!-- 商品グリッド（data-catで絞り込み） -->
     <div class="list-grid" id="listGrid">
-      <div class="list-item fade-in">
-        <div class="list-img">
-          <div class="list-img-inner">
-			  <img src="./image/猫服.jpg" alt="商品1">
-          </div>
-        </div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.05s">
-        <div class="list-img"><div class="list-img-inner"> <img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.1s">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.15s">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_150308.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.05s">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.1s">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.15s">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.2s">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.05s">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.1s">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-      <div class="list-item fade-in" style="--delay:0.15s">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="商品1"></div></div>
-        <p class="list-name">春の新作　ピアス</p>
-        <p class="list-price">￥ 1，000</p>
-      </div>
-    </div>
 
+      <!-- ピアス -->
+      <div class="list-item" data-cat="pierce">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/ピアス.jpg" alt="ピアス" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">春の新作　ピアス</p>
+        <p class="list-price">￥ 1，000</p>
+      </div>
+      <div class="list-item" data-cat="pierce">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="ピアス2" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">春の新作　ピアス</p>
+        <p class="list-price">￥ 1，000</p>
+      </div>
+      <div class="list-item" data-cat="pierce">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_150308.jpg" alt="ピアス3" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">春の新作　ピアス</p>
+        <p class="list-price">￥ 1，000</p>
+      </div>
+      <div class="list-item" data-cat="pierce">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/指輪丸.jpg" alt="ピアス4" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">春の新作　ピアス</p>
+        <p class="list-price">￥ 1，000</p>
+      </div>
+
+      <!-- ぬい服 -->
+      <div class="list-item" data-cat="nuifuku">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/猫服.jpg" alt="ぬい服1" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">ぬい服　チェック</p>
+        <p class="list-price">￥ 1，500</p>
+      </div>
+      <div class="list-item" data-cat="nuifuku">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/黒チェック服.jpg" alt="ぬい服2" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">ぬい服　黒チェック</p>
+        <p class="list-price">￥ 1，500</p>
+      </div>
+      <div class="list-item" data-cat="nuifuku">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/わらぼうし.jpg" alt="ぬい服3" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">ぬい服　わらぼうし</p>
+        <p class="list-price">￥ 2，000</p>
+      </div>
+
+      <!-- ぬい小物 -->
+      <div class="list-item" data-cat="nuikomono">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/チョコ.jpg" alt="ぬい小物1" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">ぬい小物　チョコ</p>
+        <p class="list-price">￥ 800</p>
+      </div>
+      <div class="list-item" data-cat="nuikomono">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/えん.jpg" alt="ぬい小物2" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">ぬい小物　えん</p>
+        <p class="list-price">￥ 800</p>
+      </div>
+
+      <!-- リング -->
+      <div class="list-item" data-cat="ring">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/指輪丸.jpg" alt="リング1" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">レジンリング</p>
+        <p class="list-price">￥ 1，200</p>
+      </div>
+      <div class="list-item" data-cat="ring">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/まる.jpg" alt="リング2" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">レジンリング　まる</p>
+        <p class="list-price">￥ 1，200</p>
+      </div>
+
+      <!-- アクセサリー -->
+      <div class="list-item" data-cat="accessory">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/レジン.jpg" alt="アクセサリー1" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">レジンアクセサリー</p>
+        <p class="list-price">￥ 1，000</p>
+      </div>
+      <div class="list-item" data-cat="accessory">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/ゲーム機.jpg" alt="アクセサリー2" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">ゲームアクセサリー</p>
+        <p class="list-price">￥ 1，500</p>
+      </div>
+
+      <!-- その他 -->
+      <div class="list-item" data-cat="other">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/チャーム.jpg" alt="その他1" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">チャーム</p>
+        <p class="list-price">￥ 600</p>
+      </div>
+      <div class="list-item" data-cat="other">
+        <div class="list-img"><div class="list-img-inner"><img src="./image/ゆび.jpg" alt="その他2" onerror="this.style.display='none'"></div></div>
+        <p class="list-name">その他アイテム</p>
+        <p class="list-price">￥ 600</p>
+      </div>
+
+    </div>
   </main>
 
-  <!-- ===== FOOTER ===== -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-logo-wrap">
@@ -154,5 +174,39 @@
 
   <div class="petals-container" id="petalsContainer"></div>
   <script src="script.js"></script>
+  <script>
+    // タブ切り替え
+    const tabs = document.querySelectorAll('.list-tab');
+    const items = document.querySelectorAll('.list-item');
+
+    function switchTab(cat) {
+      // タブのアクティブ切り替え
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
+
+      // 商品の表示/非表示（アニメーション付き）
+      items.forEach(item => {
+        if (item.dataset.cat === cat) {
+          item.style.display = '';
+          // フェードイン
+          item.style.opacity = '0';
+          item.style.transform = 'translateY(16px)';
+          requestAnimationFrame(() => {
+            item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
+          });
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.cat));
+    });
+
+    // 初期表示：ピアス
+    switchTab('pierce');
+  </script>
 </body>
 </html>
