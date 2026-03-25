@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact - HARURI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Yomogi&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo-link">
+      <img src="./image/rogo.png" alt="HARURI ロゴ" class="logo-img" />
+    </a>
+
+    <nav class="global-nav">
+      <a href="index.html"   class="nav-btn">Top</a>
+      <a href="about.html"   class="nav-btn">About</a>
+      <a href="list.html"    class="nav-btn">List</a>
+      <a href="gallery.html" class="nav-btn">Gallery</a>
+      <a href="contact.html" class="nav-btn active">Contact</a>
+    </nav>
+
+    <button class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="index.html"   class="nav-btn">Top</a>
+    <a href="about.html"   class="nav-btn">About</a>
+    <a href="list.html"    class="nav-btn">List</a>
+    <a href="gallery.html" class="nav-btn">Gallery</a>
+    <a href="contact.html" class="nav-btn active">Contact</a>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="contact-hero">
+  <div class="gallery-hero-inner">
+    <h1 class="gallery-big-title">
+      <span class="gallery-title-cap">C</span>ontact
+    </h1>
+  </div>
+</section>
+
+<!-- ===== FORM ===== -->
+<section class="contact-form-section">
+  <div class="contact-form-wrap">
+
+    <div class="form-card">
+
+      <!-- ▼ 種別選択 -->
+      <div class="form-group">
+        <label class="form-label">お問い合わせ種別</label>
+        <select class="form-input" id="type" onchange="toggleOrderFields()">
+          <option value="normal">通常のお問い合わせ</option>
+          <option value="order">オーダーメイド</option>
+        </select>
+      </div>
+
+      <!-- 共通項目 -->
+      <div class="form-group">
+        <label class="form-label">お名前</label>
+        <input class="form-input" type="text" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">メールアドレス</label>
+        <input class="form-input form-input--wide" type="email" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">電話番号</label>
+        <input class="form-input form-input--mid" type="tel" />
+      </div>
+
+      <!-- ▼ 通常問い合わせ -->
+      <div id="normalFields">
+        <div class="form-group">
+          <label class="form-label">お問合せ内容</label>
+          <textarea class="form-textarea"></textarea>
+        </div>
+      </div>
+
+      <!-- ▼ オーダーメイド専用 -->
+      <div id="orderFields" style="display:none;">
+
+        <div class="form-group">
+          <label class="form-label">希望アイテム</label>
+          <input class="form-input" type="text" placeholder="例：ぬい服・チャーム" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">ご予算</label>
+          <input class="form-input" type="text" placeholder="例：3000円〜5000円" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">イメージ詳細</label>
+          <textarea class="form-textarea" placeholder="色・素材・雰囲気など"></textarea>
+        </div>
+
+      </div>
+
+      <!-- ボタン -->
+      <div class="form-buttons">
+        <button class="btn-clear" type="button" onclick="clearForm()">クリア</button>
+        <button class="btn-send" type="button" onclick="submitForm()">送信</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-logo-wrap">
+      <img src="./image/rogo.png" class="logo-img logo-img--footer" />
+      <span class="footer-brand">HARURI</span>
+    </div>
+
+    <nav class="footer-nav">
+      <a href="index.html">☆Top☆</a>
+      <a href="about.html">☆About☆</a>
+      <a href="list.html">☆List☆</a>
+      <a href="gallery.html">☆Gallery☆</a>
+      <a href="contact.html">☆Contact☆</a>
+    </nav>
+
+    <div class="footer-sns">
+      <a href="#" class="sns-btn sns-x"><img src="./image/Xアイコン.png"></a>
+      <a href="#" class="sns-btn sns-yt"><img src="./image/YouTubeアイコン.png"></a>
+      <a href="#" class="sns-btn sns-tt"><img src="./image/ティックトックアイコン.png"></a>
+      <a href="#" class="sns-btn sns-ig"><img src="./image/Instagramアイコン.png"></a>
+    </div>
+
+    <p class="footer-copy">©2026 HARURI</p>
+
+  </div>
+</footer>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast">送信しました！ありがとうございます🌸</div>
+
+<script src="script.js"></script>
+
+<!-- ===== JS（追加） ===== -->
+<script>
+function toggleOrderFields() {
+  const type = document.getElementById("type").value;
+  const order = document.getElementById("orderFields");
+  const normal = document.getElementById("normalFields");
+
+  if (type === "order") {
+    order.style.display = "block";
+    normal.style.display = "none";
+  } else {
+    order.style.display = "none";
+    normal.style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>

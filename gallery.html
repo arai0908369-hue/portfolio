@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery - HARURI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Yomogi&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo-link">
+        <img src="./image/rogo.png" alt="HARURI ロゴ" class="logo-img" />
+      </a>
+      <nav class="global-nav">
+        <a href="index.html"   class="nav-btn">Top</a>
+        <a href="about.html"   class="nav-btn">About</a>
+        <a href="list.html"    class="nav-btn">List</a>
+        <a href="gallery.html" class="nav-btn active">Gallery</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.html"   class="nav-btn">Top</a>
+      <a href="about.html"   class="nav-btn">About</a>
+      <a href="list.html"    class="nav-btn">List</a>
+      <a href="gallery.html" class="nav-btn active">Gallery</a>
+      <a href="contact.html" class="nav-btn">Contact</a>
+    </div>
+  </header>
+
+  <section class="gallery-hero">
+    <div class="gallery-hero-inner">
+      <h1 class="gallery-big-title">
+        <span class="gallery-title-cap">G</span>allery
+      </h1>
+      <div class="gallery-feature">
+        <div class="gallery-feature-text fade-in">
+          <p>ひとつひとつに、小さな想いを閉じ込めて。</p>
+          <p>さらりと光るレジンも、</p>
+          <p>やさしく包む布のぬくもりも、</p>
+          <p>すべては、「好き」を形にするために。</p>
+          <p>手に取ったその瞬間、</p>
+          <p>ほんの少しだけ心がやわらぐように。</p>
+          <p>あなただけの「ときめき」を、</p>
+          <p>そっと届けられますように。</p>
+        </div>
+        <div class="gallery-feature-img fade-in" style="--delay:0.1s">
+          <div class="gallery-feature-img-frame">
+            <div class="gallery-feature-img-inner">
+              <img src="./image/mode.png" alt="ギャラリー">
+            </div>
+            <span class="gallery-sparkle gallery-sparkle--1">✦</span>
+            <span class="gallery-sparkle gallery-sparkle--2">✦</span>
+            <span class="gallery-sparkle gallery-sparkle--3">✦</span>
+            <span class="gallery-sparkle gallery-sparkle--4">✧</span>
+            <span class="gallery-sparkle gallery-sparkle--5">✧</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-grid-section">
+    <div class="gallery-page-grid">
+      <div class="gallery-page-item fade-in" onclick="openPageGallery(0)">
+        <div class="gallery-page-img"><img src="./image/レジン.jpg" alt="作品1" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.05s" onclick="openPageGallery(1)">
+        <div class="gallery-page-img"><img src="./image/20220917_235849.jpg" alt="作品2" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.1s" onclick="openPageGallery(2)">
+        <div class="gallery-page-img"><img src="./image/指輪丸.jpg" alt="作品3" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.05s" onclick="openPageGallery(3)">
+        <div class="gallery-page-img"><img src="./image/黒チェック服.jpg" alt="作品4" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.1s" onclick="openPageGallery(4)">
+        <div class="gallery-page-img"><img src="./image/ゲーム機.jpg" alt="作品5" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.15s" onclick="openPageGallery(5)">
+        <div class="gallery-page-img"><img src="./image/チョコ.jpg" alt="作品6" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" onclick="openPageGallery(6)">
+        <div class="gallery-page-img"><img src="./image/わらぼうし.jpg" alt="作品7" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.05s" onclick="openPageGallery(7)">
+        <div class="gallery-page-img"><img src="./image/ピアス.jpg" alt="作品8" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.1s" onclick="openPageGallery(8)">
+        <div class="gallery-page-img"><img src="./image/猫服.jpg" alt="作品9" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.05s" onclick="openPageGallery(9)">
+        <div class="gallery-page-img"><img src="./image/チャーム.jpg" alt="作品10" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.1s" onclick="openPageGallery(10)">
+        <div class="gallery-page-img"><img src="./image/えん.jpg" alt="作品11" onerror="this.style.display='none'"></div>
+      </div>
+      <div class="gallery-page-item fade-in" style="--delay:0.15s" onclick="openPageGallery(11)">
+        <div class="gallery-page-img"><img src="./image/まる.jpg" alt="作品12" onerror="this.style.display='none'"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo-wrap">
+        <img src="./image/rogo.png" alt="HARURI ロゴ" class="logo-img logo-img--footer" />
+        <span class="footer-brand">HARURI</span>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">☆Top☆</a>
+        <a href="about.html">☆About☆</a>
+        <a href="list.html">☆List☆</a>
+        <a href="gallery.html">☆Gallery☆</a>
+        <a href="contact.html">☆Contact☆</a>
+      </nav>
+      <div class="footer-sns">
+        <a href="#" class="sns-btn sns-x"  aria-label="X"><img src="./image/Xアイコン.png" alt="X"></a>
+        <a href="#" class="sns-btn sns-yt" aria-label="YouTube"><img src="./image/YouTubeアイコン.png" alt="YouTube"></a>
+        <a href="#" class="sns-btn sns-tt" aria-label="TikTok"><img src="./image/ティックトックアイコン.png" alt="TikTok"></a>
+        <a href="#" class="sns-btn sns-ig" aria-label="Instagram"><img src="./image/Instagramアイコン.png" alt="Instagram"></a>
+      </div>
+      <p class="footer-copy">©2026 HARURI All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="pageGalleryModal" onclick="closeModal('pageGalleryModal')">
+    <div class="modal-box modal-box--gallery" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('pageGalleryModal')">✕</button>
+      <div class="gallery-modal-img" id="pageGalleryImg" style="aspect-ratio:417/396; position:relative;"></div>
+      <div class="gallery-modal-nav">
+        <button onclick="changePageGallery(-1)">&#10094;</button>
+        <button onclick="changePageGallery(1)">&#10095;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="petals-container" id="petalsContainer"></div>
+  <script src="script.js"></script>
+  <script>
+    const pageImgs = [
+      './image/20250711_121605.jpg','./image/20220917_235849.jpg','./image/指輪丸.jpg',
+      './image/黒チェック服.jpg','./image/ゲーム機.jpg','./image/チョコ.jpg',
+      './image/わらぼうし.jpg','./image/ピアス.jpg','./image/猫服.jpg',
+      './image/チャーム.jpg','./image/えん.jpg','./image/まる.jpg',
+    ];
+    let pgIdx = 0;
+    function openPageGallery(i) { pgIdx = i; renderPG(); document.getElementById('pageGalleryModal').classList.add('open'); document.body.style.overflow='hidden'; }
+    function renderPG() { document.getElementById('pageGalleryImg').innerHTML = `<img src="${pageImgs[pgIdx]}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">`; }
+    function changePageGallery(dir) { pgIdx=(pgIdx+dir+pageImgs.length)%pageImgs.length; renderPG(); }
+  </script>
+</body>
+</html>

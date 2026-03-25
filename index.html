@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HARURI - 推しの色を、耳に。指に。首元に。</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Yomogi&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo-link">
+        <img src="./image/rogo.png" alt="HARURI ロゴ" class="logo-img" />
+      </a>
+      <nav class="global-nav">
+        <a href="index.html"   class="nav-btn active">Top</a>
+        <a href="about.html"   class="nav-btn">About</a>
+        <a href="list.html"    class="nav-btn">List</a>
+        <a href="gallery.html" class="nav-btn">Gallery</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.html"   class="nav-btn">Top</a>
+      <a href="about.html"   class="nav-btn">About</a>
+      <a href="list.html"    class="nav-btn">List</a>
+      <a href="gallery.html" class="nav-btn">Gallery</a>
+      <a href="contact.html" class="nav-btn">Contact</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="slider-outer">
+      <div id="heroSlidesInner" class="hero-slides-inner">
+        <div class="hero-slide-card">
+          <div class="slide-img-block s-img1"><img src="./image/nekomaru.jpg" alt="ねこまる"></div>
+        </div>
+        <div class="hero-slide-card">
+          <div class="slide-img-block s-img2"><img src="./image/ゲーム機.jpg" alt="ゲーム"></div>
+        </div>
+        <div class="hero-slide-card">
+          <div class="slide-img-block s-img3"><img src="./image/まる.jpg" alt="まる"></div>
+        </div>
+        <div class="hero-slide-card">
+          <div class="slide-img-block s-img4"><img src="./image/ゆび.jpg" alt="ゆび"></div>
+        </div>
+        <div class="hero-slide-card">
+          <div class="slide-img-block s-img5"><img src="./image/レジン.jpg" alt="レジン"></div>
+        </div>
+      </div>
+      <button class="slider-btn slider-prev" id="sliderPrev">&#10094;</button>
+      <button class="slider-btn slider-next" id="sliderNext">&#10095;</button>
+      <div class="hero-overlay-content">
+        <h1 class="hero-title"><span class="title-haruri">Haruri</span></h1>
+        <div class="hero-poem-area">
+          <span class="poem-tag">推しのカラーを纏う</span>
+          <span class="poem-tag">推しへの愛を形にする</span>
+        </div>
+      </div>
+    </div>
+    <div class="slider-dots" id="sliderDots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </section>
+
+  <!-- COPY SECTION -->
+  <section class="copy-section" id="about">
+    <div class="copy-grid">
+
+      <div class="copy-block fade-in">
+        <div class="copy-poem-wrap">
+          <div class="copy-poem-bg">
+            <div class="copy-text">
+              <p>推しの色を、耳に。指に。首元に。</p>
+              <p>ただのアクセサリーじゃない</p>
+              <p>それは、あなたの</p>
+              <p>「好き」を形にした小さな魔法。</p>
+              <p>世界でひとつのあなたの形。</p>
+            </div>
+          </div>
+        </div>
+        <div class="copy-img-wrap">
+          <div class="copy-img img-resin">
+            <img src="./image/ゲーム機.jpg" alt="ゲーム">
+          </div>
+        </div>
+      </div>
+
+      <div class="copy-block reverse fade-in" style="--delay:0.12s">
+        <div class="copy-poem-wrap">
+          <div class="copy-poem-bg">
+            <div class="copy-text">
+              <p>推しの隣に、いつだって連れていける</p>
+              <p>ライブに、聖地に、日常のどこにでも</p>
+              <p>Haruriのぬい服は、</p>
+              <p>あなたとぬいぐるみの</p>
+              <p>「おそろい」の夢を叶えます。</p>
+            </div>
+          </div>
+        </div>
+        <div class="copy-img-wrap">
+          <div class="copy-img img-nuifuku">
+            <img src="./image/猫服.jpg" alt="猫服">
+          </div>
+        </div>
+      </div>
+
+      <div class="copy-block fade-in" style="--delay:0.24s">
+        <div class="copy-poem-wrap">
+          <div class="copy-poem-bg">
+            <div class="copy-text">
+              <p>カバンを開けるたびに</p>
+              <p>推しを感じる瞬間がある</p>
+              <p>ちいさなチャームに込めた、</p>
+              <p>おおきな「好き」。</p>
+              <p>現場も、日常も、</p>
+              <p>推しと一緒に彩ろう。</p>
+            </div>
+          </div>
+        </div>
+        <div class="copy-img-wrap copy-img-wrap--double">
+          <!-- 画像2枚を重ねたレイアウト -->
+          <div class="copy-double-imgs">
+            <div class="copy-double-img copy-double-img--back">
+              <img src="./image/えん.jpg" alt="えん">
+            </div>
+            <div class="copy-double-img copy-double-img--front">
+              <img src="./image/チャーム.jpg" alt="チャーム">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MEDIA SECTION -->
+  <section class="media-section" id="list">
+    <div class="media-deco">
+      <img src="./image/猫下枠.png" alt="" class="media-deco-img" />
+    </div>
+    <a href="#" class="media-row fade-in" onclick="openModal('youtube'); return false;">
+      <div class="media-row-thumb">
+        <img src="./image/ラビットふぁ.png" alt="YouTube制作風景" class="media-row-photo" onerror="this.style.display='none'">
+        <div class="media-row-bg yt-thumb"></div>
+        <div class="media-play-btn">▶</div>
+      </div>
+      <p class="media-row-label">YouTube　制作風景</p>
+    </a>
+    <a href="#" class="media-row media-row--reverse fade-in" style="--delay:0.14s" onclick="openModal('tiktok'); return false;">
+      <p class="media-row-label">TikTok　配信live</p>
+      <div class="media-row-thumb">
+        <img src="./image/ペンチ.jpg" alt="TikTok配信live" class="media-row-photo" onerror="this.style.display='none'">
+        <div class="media-row-bg tk-thumb"></div>
+        <div class="media-play-btn">▶</div>
+      </div>
+    </a>
+  </section>
+
+  <!-- EVENT -->
+  <section class="event">
+    <p class="event-title">next　EVENT</p>
+    <ul class="event-list">
+      <li><span class="date">2026. 5. 5</span><span class="text">ハンドメイド展</span></li>
+      <li><span class="date">2026. 7. 1</span><span class="text">即売会</span></li>
+      <li><span class="date">2026. 10. 10</span><span class="text">ハンドメイド展</span></li>
+    </ul>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery-section" id="gallery">
+    <div class="section-header">
+      <h2 class="section-title">☆View ALL☆</h2>
+    </div>
+    <div class="gallery-outer">
+      <div class="gallery-track" id="galleryTrack">
+        <div class="gallery-item size-main" onclick="openGalleryModal(0)"><div class="gallery-img g-img1"><img src="./image/指輪丸.jpg" alt="指輪丸"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(1)"><div class="gallery-img g-img2"><img src="./image/黒チェック服.jpg" alt="黒チェック"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(2)"><div class="gallery-img g-img3"><img src="./image/ゲーム機.jpg" alt="ゲーム"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(3)"><div class="gallery-img g-img4"><img src="./image/チョコ.jpg" alt="チョコ"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(4)"><div class="gallery-img g-img5"><img src="./image/わらぼうし.jpg" alt="わらぼうし"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(5)"><div class="gallery-img g-img6"><img src="./image/ピアス.jpg" alt="ピアス"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(6)"><div class="gallery-img g-img1"><img src="./image/猫服.jpg" alt="猫服"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(7)"><div class="gallery-img g-img2"><img src="./image/チャーム.jpg" alt="チャーム"></div></div>
+        <!-- 複製 -->
+        <div class="gallery-item size-main" onclick="openGalleryModal(0)"><div class="gallery-img g-img1"><img src="./image/指輪丸.jpg" alt="指輪丸"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(1)"><div class="gallery-img g-img2"><img src="./image/黒チェック服.jpg" alt="黒チェック"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(2)"><div class="gallery-img g-img3"><img src="./image/ゲーム機.jpg" alt="ゲーム"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(3)"><div class="gallery-img g-img4"><img src="./image/チョコ.jpg" alt="チョコ"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(4)"><div class="gallery-img g-img5"><img src="./image/わらぼうし.jpg" alt="わらぼうし"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(5)"><div class="gallery-img g-img6"><img src="./image/ピアス.jpg" alt="ピアス"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(6)"><div class="gallery-img g-img1"><img src="./image/猫服.jpg" alt="猫服"></div></div>
+        <div class="gallery-item size-main" onclick="openGalleryModal(7)"><div class="gallery-img g-img2"><img src="./image/チャーム.jpg" alt="チャーム"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo-wrap">
+        <img src="./image/rogo.png" alt="HARURI ロゴ" class="logo-img logo-img--footer" />
+        <span class="footer-brand">HARURI</span>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">☆Top☆</a>
+        <a href="about.html">☆About☆</a>
+        <a href="list.html">☆List☆</a>
+        <a href="gallery.html">☆Gallery☆</a>
+        <a href="contact.html">☆Contact☆</a>
+      </nav>
+      <div class="footer-sns">
+        <a href="#" class="sns-btn sns-x"  aria-label="X"><img src="./image/Xアイコン.png" alt="X"></a>
+        <a href="#" class="sns-btn sns-yt" aria-label="YouTube"><img src="./image/YouTubeアイコン.png" alt="YouTube"></a>
+        <a href="#" class="sns-btn sns-tt" aria-label="TikTok"><img src="./image/ティックトックアイコン.png" alt="TikTok"></a>
+        <a href="#" class="sns-btn sns-ig" aria-label="Instagram"><img src="./image/Instagramアイコン.png" alt="Instagram"></a>
+      </div>
+      <p class="footer-copy">©2026 HARURI All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL: Media -->
+  <div class="modal-overlay" id="mediaModal" onclick="closeModal('mediaModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('mediaModal')">✕</button>
+      <div class="modal-content" id="mediaModalContent"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: Gallery -->
+  <div class="modal-overlay" id="galleryModal" onclick="closeModal('galleryModal')">
+    <div class="modal-box modal-box--gallery" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('galleryModal')">✕</button>
+      <div class="gallery-modal-img" id="galleryModalImg"></div>
+      <p class="gallery-modal-label" id="galleryModalLabel"></p>
+      <div class="gallery-modal-nav">
+        <button onclick="changeGalleryModal(-1)">&#10094;</button>
+        <button onclick="changeGalleryModal(1)">&#10095;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="petals-container" id="petalsContainer"></div>
+  <script src="script.js"></script>
+</body>
+</html>
