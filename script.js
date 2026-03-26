@@ -2,52 +2,167 @@
    HARURI - Main JavaScript
    ============================================================ */
 
-// ===== Loading Screen =====
+// ===== Loading Screen - Oshi-katsu =====
 (function() {
   var ls = document.getElementById('loading-screen');
   if (!ls) return;
 
-  // 花びら生成
-  var lp = document.getElementById('loadingPetals');
-  if (lp) {
-    for (var i = 0; i < 12; i++) {
-      var p = document.createElement('div');
-      p.className = 'loading-petal';
-      var size = 7 + Math.random() * 10;
-      var hue  = 318 + Math.random() * 42;
-      p.style.cssText = 'width:'+size+'px;height:'+size+'px;left:'+(Math.random()*100)+'vw;animation-duration:'+(7+Math.random()*8)+'s;animation-delay:'+(Math.random()*3)+'s;background:radial-gradient(circle at 38% 38%,hsla('+hue+',70%,82%,0.9),hsla('+hue+',58%,70%,0.6));';
-      lp.appendChild(p);
+  var canvas = document.getElementById('ldCanvas');
+  if (canvas) {
+    var ctx = canvas.getContext('2d');
+    var W, H;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
     }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // パーティクル生成
+    var particles = [];
+    var types = ['star', 'heart', 'cross', 'dot'];
+
+    function makeParticle() {
+      var type = types[Math.floor(Math.random() * types.length)];
+      return {
+        x:    Math.random() * W,
+        y:    H + 20,
+        vx:   (Math.random() - 0.5) * 0.8,
+        vy:   -(0.6 + Math.random() * 1.4),
+        r:    2 + Math.random() * 5,
+        op:   0.2 + Math.random() * 0.7,
+        hue:  290 + Math.random() * 70,
+        type: type,
+        rot:  Math.random() * Math.PI * 2,
+        rotV: (Math.random() - 0.5) * 0.04,
+        life: 0,
+        maxLife: 120 + Math.random() * 100
+      };
+    }
+    for (var i = 0; i < 60; i++) {
+      var p = makeParticle();
+      p.y = Math.random() * H;
+      particles.push(p);
+    }
+
+    // ハートパス
+    function heartPath(cx, cy, r) {
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + r * 0.3);
+      ctx.bezierCurveTo(cx, cy - r * 0.5, cx - r * 1.2, cy - r * 0.5, cx - r * 1.2, cy + r * 0.2);
+      ctx.bezierCurveTo(cx - r * 1.2, cy + r * 0.9, cx, cy + r * 1.5, cx, cy + r * 1.5);
+      ctx.bezierCurveTo(cx, cy + r * 1.5, cx + r * 1.2, cy + r * 0.9, cx + r * 1.2, cy + r * 0.2);
+      ctx.bezierCurveTo(cx + r * 1.2, cy - r * 0.5, cx, cy - r * 0.5, cx, cy + r * 0.3);
+      ctx.closePath();
+    }
+
+    // 十字星パス
+    function crossPath(cx, cy, r) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(Math.PI / 4);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, r * 0.28, r * 2.2, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(0, 0, r * 2.2, r * 0.28, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawParticle(p) {
+      ctx.save();
+      var fade = Math.min(p.life / 20, 1) * Math.min((p.maxLife - p.life) / 20, 1);
+      ctx.globalAlpha = p.op * fade;
+
+      var grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+      grd.addColorStop(0, 'hsla('+p.hue+',85%,88%,1)');
+      grd.addColorStop(1, 'hsla('+p.hue+',75%,75%,0)');
+      ctx.fillStyle = grd;
+      ctx.strokeStyle = 'hsla('+p.hue+',85%,82%,0.8)';
+      ctx.lineWidth = 0.8;
+
+      if (p.type === 'heart') {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.translate(-p.x, -p.y);
+        heartPath(p.x, p.y - p.r * 0.6, p.r * 0.7);
+        ctx.fill();
+        ctx.restore();
+      } else if (p.type === 'cross') {
+        crossPath(p.x, p.y, p.r);
+      } else if (p.type === 'star') {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        // 光の十字
+        ctx.save();
+        ctx.globalAlpha = p.op * fade * 0.7;
+        ctx.fillStyle = 'hsla('+p.hue+',90%,95%,1)';
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, p.r * 0.2, p.r * 2.8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, p.r * 2.8, p.r * 0.2, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      } else {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    var animId;
+    function tick() {
+      if (!document.getElementById('loading-screen')) {
+        cancelAnimationFrame(animId);
+        return;
+      }
+      ctx.clearRect(0, 0, W, H);
+
+      for (var i = particles.length - 1; i >= 0; i--) {
+        var p = particles[i];
+        p.x   += p.vx;
+        p.y   += p.vy;
+        p.rot += p.rotV;
+        p.life++;
+        if (p.life > p.maxLife) {
+          particles.splice(i, 1);
+          particles.push(makeParticle());
+        } else {
+          drawParticle(p);
+        }
+      }
+      animId = requestAnimationFrame(tick);
+    }
+    tick();
   }
 
+  // 消す処理
   var hidden = false;
   function hideLoading() {
     if (hidden) return;
     hidden = true;
-    // 即座に操作できなくする
     ls.style.pointerEvents = 'none';
     ls.style.touchAction   = 'none';
     ls.style.zIndex        = '-1';
-    // フェードアウト
-    ls.style.transition = 'opacity 0.6s ease';
-    ls.style.opacity    = '0';
-    // 完全削除
+    ls.style.transition    = 'opacity 0.7s ease';
+    ls.style.opacity       = '0';
     setTimeout(function() {
       ls.style.display = 'none';
       ls.style.visibility = 'hidden';
       if (ls.parentNode) ls.parentNode.removeChild(ls);
-    }, 700);
+    }, 750);
   }
 
-  // タイマーで消す
-  setTimeout(hideLoading, 2500);
-
-  // スマホ用：タップしたら即消す（万が一固まった場合の保険）
+  setTimeout(hideLoading, 2800);
   ls.addEventListener('touchstart', function() {
     setTimeout(hideLoading, 300);
   }, { passive: true });
-
-  // バックグラウンドから復帰したときも消す
   document.addEventListener('visibilitychange', function() {
     if (!document.hidden) hideLoading();
   });
