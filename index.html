@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HARURI 推し活応援ハンドメイドサイト</title>
+  <title>HARURI - 推しの色を、耳に。指に。首元に。</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Yomogi&display=swap" rel="stylesheet" />
@@ -13,11 +13,18 @@
 
   <!-- LOADING SCREEN -->
   <div id="loading-screen">
-    <div class="loading-petals" id="loadingPetals"></div>
-    <img src="./image/rogo.png" alt="HARURI" class="loading-logo" />
-    <div class="loading-brand">Haruri</div>
-    <div class="loading-catch">推しのカラーを纏う　推しへの愛を形にする</div>
-    <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+    <canvas id="ldCanvas"></canvas>
+    <div class="ld-content">
+      <div class="ld-ring ld-ring--outer"></div>
+      <div class="ld-ring ld-ring--inner"></div>
+      <div class="ld-center">
+        <div class="ld-heart">♡</div>
+        <div class="ld-brand">Haruri</div>
+        <div class="ld-catch">推しのカラーを纏う</div>
+      </div>
+    </div>
+    <div class="ld-bar-wrap"><div class="ld-bar"></div></div>
+    <div class="ld-bottom-text">推しへの愛を形にする ✦</div>
   </div>
 
   <!-- HEADER -->
