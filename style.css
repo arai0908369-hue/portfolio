@@ -554,23 +554,36 @@ a { text-decoration: none; color: inherit; }
 }
 .gallery-feature-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .gallery-grid-section { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
-.gallery-page-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.gallery-page-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .gallery-page-item {
-  cursor: pointer; overflow: hidden; transition: var(--transition);
+  cursor: pointer; overflow: hidden; transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
   aspect-ratio: 1; position: relative;
-  /* かわいい角丸 - 花びら風 */
-  border-radius: 42% 58% 54% 46% / 48% 44% 56% 52%;
-  box-shadow: 0 6px 22px rgba(170,65,132,0.16);
+  /* 花びら風のかわいい形 */
+  border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
+  box-shadow:
+    0 8px 28px rgba(170,65,132,0.2),
+    0 0 0 4px rgba(255,255,255,0.8),
+    0 0 0 7px rgba(230,150,201,0.35);
+}
+.gallery-page-item:nth-child(even) {
+  /* 偶数は少し違う形 */
+  border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%;
+}
+.gallery-page-item:nth-child(3n) {
+  border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%;
 }
 .gallery-page-item:hover {
-  transform: scale(1.05) rotate(1deg);
+  transform: scale(1.07) rotate(-2deg);
   z-index: 2;
-  border-radius: 48% 52% 46% 54% / 54% 58% 42% 46%;
-  box-shadow: 0 12px 36px rgba(170,65,132,0.28);
+  border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+  box-shadow:
+    0 16px 40px rgba(170,65,132,0.32),
+    0 0 0 5px rgba(255,255,255,0.95),
+    0 0 0 9px rgba(230,150,201,0.5);
 }
 .gallery-page-img { width: 100%; height: 100%; position: relative; }
 .gallery-page-img::after {
-  content: 'check☆';
+  content: 'click☆';
   position: absolute; inset: 0;
   background: rgba(230,130,195,0.45);
   display: flex; align-items: center; justify-content: center;
@@ -805,11 +818,20 @@ a { text-decoration: none; color: inherit; }
 .gallery-page-item {
   cursor: pointer;
   overflow: hidden;
-  transition: var(--transition);
+  transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
   aspect-ratio: 417 / 396;
   position: relative;
-  border-radius: 42% 58% 54% 46% / 48% 44% 56% 52%;
-  box-shadow: 0 6px 22px rgba(170,65,132,0.16);
+  border-radius: 60% 40% 55% 45% / 45% 55% 40% 60%;
+  box-shadow:
+    0 8px 28px rgba(170,65,132,0.2),
+    0 0 0 4px rgba(255,255,255,0.8),
+    0 0 0 7px rgba(230,150,201,0.35);
+}
+.gallery-page-item:nth-child(even) {
+  border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%;
+}
+.gallery-page-item:nth-child(3n) {
+  border-radius: 55% 45% 60% 40% / 40% 60% 45% 55%;
 }
 .gallery-page-item:hover { transform: scale(1.05) rotate(1deg); z-index: 2; box-shadow: 0 12px 36px rgba(170,65,132,0.28); border-radius: 48% 52% 46% 54% / 54% 58% 42% 46%; }
 .gallery-page-item:hover .gallery-page-img::after { opacity: 1; }
@@ -818,7 +840,7 @@ a { text-decoration: none; color: inherit; }
   width: 100%; height: 100%; position: relative;
 }
 .gallery-page-img::after {
-  content: 'check☆';
+  content: 'click☆';
   position: absolute; inset: 0;
   background: rgba(230,130,195,0.45);
   display: flex; align-items: center; justify-content: center;
@@ -1345,4 +1367,160 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 480px) {
   .list-tab { font-size: 0.76rem; padding: 7px 10px 9px; }
   .list-grid { gap: 12px; padding: 0 12px 60px; }
+}
+/* ============================================================
+   LOADING SCREEN - Oshi-katsu ver.
+   ============================================================ */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%,
+      #fce4fb 0%, #f0caf5 35%, #e2b8f0 65%, #d4a4ec 100%);
+  opacity: 1;
+  pointer-events: all;
+  touch-action: none;
+  overflow: hidden;
+}
+#loading-screen.hide {
+  opacity: 0;
+  pointer-events: none;
+  touch-action: none;
+}
+
+#ldCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* 中央コンテンツ */
+.ld-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 230px;
+  height: 230px;
+}
+
+/* 外側リング */
+.ld-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+.ld-ring--outer {
+  width: 220px; height: 220px;
+  border: 2px dashed rgba(200,120,220,0.5);
+  animation: ldSpin 6s linear infinite;
+}
+.ld-ring--inner {
+  width: 180px; height: 180px;
+  border: 2px solid transparent;
+  border-top: 2.5px solid rgba(230,140,210,0.7);
+  border-right: 2.5px solid rgba(200,160,240,0.5);
+  animation: ldSpin 2.2s ease-in-out infinite reverse;
+  box-shadow: 0 0 20px rgba(210,130,240,0.3);
+}
+@keyframes ldSpin { to { transform: rotate(360deg); } }
+
+/* 中央 */
+.ld-center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ハートアイコン */
+.ld-heart {
+  font-size: 2.8rem;
+  line-height: 1;
+  color: #CC4488;
+  text-shadow:
+    0 0 16px rgba(220,80,160,0.7),
+    0 0 36px rgba(200,100,200,0.45);
+  animation: ldHeartBeat 1.2s ease-in-out infinite;
+}
+@keyframes ldHeartBeat {
+  0%,100% { transform: scale(1);    }
+  15%      { transform: scale(1.22); }
+  30%      { transform: scale(1.05); }
+  45%      { transform: scale(1.18); }
+}
+
+/* ブランド名 */
+.ld-brand {
+  font-family: 'Fascinate Inline', cursive;
+  font-size: clamp(1.9rem, 5.5vw, 3rem);
+  color: #AA4184;
+  letter-spacing: 0.06em;
+  text-shadow:
+    0 0 22px rgba(220,100,230,0.65),
+    0 0 45px rgba(200,80,210,0.3),
+    2px 2px 0 rgba(255,255,255,0.55);
+  animation: ldBrandIn 0.85s 0.2s cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes ldBrandIn {
+  from { opacity:0; transform: scale(0.75) translateY(14px); }
+  to   { opacity:1; transform: scale(1)    translateY(0); }
+}
+
+/* キャッチコピー */
+.ld-catch {
+  font-family: 'Yomogi', cursive;
+  font-size: clamp(0.78rem, 2.2vw, 0.95rem);
+  color: rgba(160, 65, 150, 0.85);
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 10px rgba(220,120,230,0.4);
+  animation: ldFadeUp 0.8s 0.45s both;
+}
+@keyframes ldFadeUp {
+  from { opacity:0; transform: translateY(10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* プログレスバー */
+.ld-bar-wrap {
+  width: 200px; height: 5px;
+  background: rgba(200,130,220,0.18);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(210,120,240,0.2);
+  animation: ldFadeUp 0.8s 0.5s both;
+}
+.ld-bar {
+  height: 100%; width: 0%;
+  border-radius: 10px;
+  background: linear-gradient(90deg,
+    #e696c9, #cc4488, #aa4184, #c880c0, #e696c9);
+  background-size: 300% 100%;
+  animation:
+    ldBarFill 2.4s 0.5s cubic-bezier(0.4,0,0.2,1) forwards,
+    ldShimmer 1.4s linear infinite;
+}
+@keyframes ldBarFill    { to { width: 100%; } }
+@keyframes ldShimmer    { 0% { background-position:100% 0; } 100% { background-position:-100% 0; } }
+
+/* 下のテキスト */
+.ld-bottom-text {
+  font-family: 'Yomogi', cursive;
+  font-size: clamp(0.72rem, 2vw, 0.88rem);
+  color: rgba(160, 65, 150, 0.65);
+  letter-spacing: 0.18em;
+  animation: ldBottomBlink 2s ease-in-out infinite, ldFadeUp 0.8s 0.7s both;
+}
+@keyframes ldBottomBlink {
+  0%,100% { opacity: 0.5; }
+  50%      { opacity: 1; }
 }
