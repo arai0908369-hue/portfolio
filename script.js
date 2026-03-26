@@ -4,10 +4,11 @@
 
 // ===== Loading Screen =====
 (function() {
-  var screen = document.getElementById('loading-screen');
-  if (!screen) return;
+  var ls = document.getElementById('loading-screen');
+  if (!ls) return;
 
-  // 闃ｱ縺ｳ繧臥函謌・  var lp = document.getElementById('loadingPetals');
+  // 花びら生成
+  var lp = document.getElementById('loadingPetals');
   if (lp) {
     for (var i = 0; i < 12; i++) {
       var p = document.createElement('div');
@@ -19,13 +20,37 @@
     }
   }
 
-  // 2.5遘貞ｾ後↓繝輔ぉ繝ｼ繝峨い繧ｦ繝遺・DOM蜑企勁
-  setTimeout(function() {
-    screen.classList.add('hide');
+  var hidden = false;
+  function hideLoading() {
+    if (hidden) return;
+    hidden = true;
+    // 即座に操作できなくする
+    ls.style.pointerEvents = 'none';
+    ls.style.touchAction   = 'none';
+    ls.style.zIndex        = '-1';
+    // フェードアウト
+    ls.style.transition = 'opacity 0.6s ease';
+    ls.style.opacity    = '0';
+    // 完全削除
     setTimeout(function() {
-      if (screen && screen.parentNode) screen.parentNode.removeChild(screen);
-    }, 750);
-  }, 2500);
+      ls.style.display = 'none';
+      ls.style.visibility = 'hidden';
+      if (ls.parentNode) ls.parentNode.removeChild(ls);
+    }, 700);
+  }
+
+  // タイマーで消す
+  setTimeout(hideLoading, 2500);
+
+  // スマホ用：タップしたら即消す（万が一固まった場合の保険）
+  ls.addEventListener('touchstart', function() {
+    setTimeout(hideLoading, 300);
+  }, { passive: true });
+
+  // バックグラウンドから復帰したときも消す
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) hideLoading();
+  });
 })();
 
 // ===== Hamburger =====
@@ -161,13 +186,13 @@ const mediaContent = {
     <div class="modal-thumb yt">?</div>
     <h3>YouTube Making Process</h3>
     <p>Watch the making process of resin accessories and plush clothes.<br>From material selection to completion.</p>
-    <a class="modal-link" href="https://youtube.com" target="_blank">→ YouTubeView Channel</a>
+    <a class="modal-link" href="https://youtube.com" target="_blank">�� YouTubeView Channel</a>
   `,
   tiktok: `
-    <div class="modal-thumb tk">♪</div>
+    <div class="modal-thumb tk">��</div>
     <h3>TikTok Livelive</h3>
     <p>TikTokLive streams and short making videos.<br>Enjoy real-time interaction!</p>
-    <a class="modal-link" href="https://tiktok.com" target="_blank">→ TikTok View</a>
+    <a class="modal-link" href="https://tiktok.com" target="_blank">�� TikTok View</a>
   `,
 };
 function openModal(type) {
