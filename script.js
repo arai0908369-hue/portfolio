@@ -301,13 +301,13 @@ const mediaContent = {
     <div class="modal-thumb yt">?</div>
     <h3>YouTube Making Process</h3>
     <p>Watch the making process of resin accessories and plush clothes.<br>From material selection to completion.</p>
-    <a class="modal-link" href="https://youtube.com" target="_blank">�� YouTubeView Channel</a>
+    <a class="modal-link" href="https://youtube.com" target="_blank">?? YouTubeView Channel</a>
   `,
   tiktok: `
-    <div class="modal-thumb tk">��</div>
+    <div class="modal-thumb tk">??</div>
     <h3>TikTok Livelive</h3>
     <p>TikTokLive streams and short making videos.<br>Enjoy real-time interaction!</p>
-    <a class="modal-link" href="https://tiktok.com" target="_blank">�� TikTok View</a>
+    <a class="modal-link" href="https://tiktok.com" target="_blank">?? TikTok View</a>
   `,
 };
 function openModal(type) {
