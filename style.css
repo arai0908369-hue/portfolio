@@ -202,6 +202,47 @@ a { text-decoration: none; color: inherit; }
 .img-nuifuku { background: linear-gradient(135deg, #c8d0e8, #d0c8e8, #e0c0d8); }
 .img-charm   { background: linear-gradient(135deg, #d8d0a8, #c8c0a0, #e0c8b0); }
 .copy-poem-bg { background: var(--bg-radial-white); border-radius: 16px; padding: 28px 36px; }
+
+/* flower divider */
+.copy-flower-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+/* 上ライン：左寄せ（右のラインを非表示） */
+.copy-flower-divider--top {
+  justify-content: flex-start;
+  margin-bottom: 14px;
+  margin-top: 0;
+}
+.copy-flower-divider--top .copy-flower-line:last-child {
+  display: none;
+}
+.copy-flower-divider--top .copy-flower-line:first-child {
+  max-width: 60px;
+}
+/* 下ライン：右寄せ（左のラインを非表示） */
+.copy-flower-divider--bottom {
+  justify-content: flex-end;
+  margin-bottom: 0;
+  margin-top: 14px;
+}
+.copy-flower-divider--bottom .copy-flower-line:first-child {
+  display: none;
+}
+.copy-flower-divider--bottom .copy-flower-line:last-child {
+  max-width: 60px;
+}
+.copy-flower-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(230,150,201,0.55), transparent);
+}
+
+
+
 .copy-text { font-family: var(--font-jp); font-size: clamp(1rem, 1.7vw, 1.3rem); line-height: 1.9; color: var(--pink); }
 .copy-text p { margin-bottom: 0.4em; }
 .copy-text p:last-child { margin-bottom: 0; }
@@ -302,7 +343,6 @@ a { text-decoration: none; color: inherit; }
   transition: box-shadow var(--transition), transform var(--transition);
 }
 .gallery-item:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 16px 44px rgba(170,65,132,0.28); }
-
 
 .gallery-item.size-main  { width: 220px; height: 380px; }
 .gallery-item.size-large { width: 210px; height: 395px; }
@@ -583,7 +623,7 @@ a { text-decoration: none; color: inherit; }
 }
 .gallery-page-img { width: 100%; height: 100%; position: relative; }
 .gallery-page-img::after {
-  content: 'click☆';
+  content: 'check☆';
   position: absolute; inset: 0;
   background: rgba(230,130,195,0.45);
   display: flex; align-items: center; justify-content: center;
@@ -840,7 +880,7 @@ a { text-decoration: none; color: inherit; }
   width: 100%; height: 100%; position: relative;
 }
 .gallery-page-img::after {
-  content: 'click☆';
+  content: 'check☆';
   position: absolute; inset: 0;
   background: rgba(230,130,195,0.45);
   display: flex; align-items: center; justify-content: center;
