@@ -298,14 +298,14 @@ function changeGalleryModal(dir) {
 // ===== Media Modals =====
 const mediaContent = {
   youtube: `
-    <div class="modal-thumb yt">?</div>
-    <h3>YouTube Making Process</h3>
-    <p>Watch the making process of resin accessories and plush clothes.<br>From material selection to completion.</p>
-    <a class="modal-link" href="https://youtube.com" target="_blank">?? YouTubeView Channel</a>
+    <div class="modal-thumb yt"><img src="./image/samune.png" alt="YouTube"></div>
+    <h3>YouTube channel</h3>
+    <p>HaruriのYouTubeチャンネルへようこそ！</p>
+    <a class="modal-link" href="https://youtube.com" target="_blank">YouTube　View Channel！</a>
   `,
   tiktok: `
     <div class="modal-thumb tk">??</div>
-    <h3>TikTok Livelive</h3>
+    <h3>TikTok Live</h3>
     <p>TikTokLive streams and short making videos.<br>Enjoy real-time interaction!</p>
     <a class="modal-link" href="https://tiktok.com" target="_blank">?? TikTok View</a>
   `,
