@@ -1557,3 +1557,8 @@ a { text-decoration: none; color: inherit; }
   0%,100% { opacity: 0.5; }
   50%      { opacity: 1; }
 }
+.sns-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* または contain */
+}
