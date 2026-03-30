@@ -535,10 +535,6 @@ a { text-decoration: none; color: inherit; }
 }
 .about-sns-btn img { width: 80px; height: 80px; object-fit: cover; display: block; border-radius: 20px; }
 .about-sns-btn:hover { transform: translateY(-4px); }
-.about-sns-x  { background: #1a1a2e; }
-.about-sns-yt { background: #cc4466; }
-.about-sns-tt { background: #7766aa; }
-.about-sns-ig { background: linear-gradient(135deg, #f09040, #cc4488, #9944cc); }
 .about-viewall { text-align: center; padding: 24px 0 8px; }
 .viewall-link {
   font-family: var(--font-jp); font-size: clamp(1.4rem, 3vw, 2rem);
@@ -1214,9 +1210,9 @@ a { text-decoration: none; color: inherit; }
   /* Footer */
   .footer-nav { gap: 8px; }
   .footer-nav a { font-size: 0.72rem; }
-  .footer-sns { gap: 8px; }
-  .sns-btn { width: 38px; height: 38px; }
-  .sns-btn img { width: 38px; height: 38px; }
+  .footer-sns { gap: 12px; }
+  .sns-btn { width: 60px; height: 60px; }
+  .sns-btn img { width: 60px; height: 60px; }
 
   /* Event */
   .event { padding: 16px 14px; }
