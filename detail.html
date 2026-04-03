@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>商品詳細 - HARURI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Yomogi&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ===== 詳細ページ専用スタイル ===== */
+    .detail-main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
+    }
+
+    /* パンくずリスト */
+    .breadcrumb {
+      font-family: var(--font-jp);
+      font-size: 0.85rem;
+      color: var(--pink);
+      margin-bottom: 32px;
+      opacity: 0.75;
+    }
+    .breadcrumb a { color: var(--pink); text-decoration: underline; }
+    .breadcrumb a:hover { opacity: 0.7; }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* メインレイアウト */
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    /* 画像エリア */
+    .detail-img-wrap {
+      position: relative;
+    }
+    .detail-img-frame {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      background: rgba(255,255,255,0.5);
+      box-shadow:
+        0 0 0 5px rgba(255,255,255,0.9),
+        0 0 0 10px rgba(230,150,201,0.4),
+        0 20px 60px rgba(170,65,132,0.25);
+      animation: fadeInUp 0.7s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    .detail-img-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    /* キラキラ装飾 */
+    .detail-sparkle {
+      position: absolute;
+      font-size: 1.4rem;
+      color: rgba(255,200,230,0.9);
+      text-shadow: 0 0 10px rgba(255,150,200,0.8);
+      pointer-events: none;
+      animation: sparklePulse 2.5s ease-in-out infinite;
+    }
+    .detail-sparkle--1 { top: -10px; left: 20%;  animation-delay: 0s; }
+    .detail-sparkle--2 { top: 15%;  right: -10px; animation-delay: 0.7s; font-size: 1rem; }
+    .detail-sparkle--3 { bottom: 5%; left: -10px; animation-delay: 1.2s; font-size: 1.2rem; }
+    @keyframes sparklePulse {
+      0%,100% { opacity: 0.4; transform: scale(0.85); }
+      50%      { opacity: 1;   transform: scale(1.2); }
+    }
+
+    /* 情報エリア */
+    .detail-info {
+      padding-top: 8px;
+      animation: fadeInUp 0.7s 0.15s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    .detail-cat-badge {
+      display: inline-block;
+      font-family: var(--font-jp);
+      font-size: 0.8rem;
+      color: white;
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      border-radius: 50px;
+      padding: 4px 16px;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+    .detail-name {
+      font-family: var(--font-jp);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--pink);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .detail-price {
+      font-family: var(--font-jp);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: var(--pink);
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .detail-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, rgba(230,150,201,0.6), transparent);
+      margin-bottom: 24px;
+    }
+
+    .detail-desc {
+      font-family: var(--font-jp);
+      font-size: 0.95rem;
+      color: var(--pink);
+      line-height: 2;
+      margin-bottom: 28px;
+      opacity: 0.85;
+    }
+
+    /* 数量 */
+    .detail-qty-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .detail-qty-label {
+      font-family: var(--font-jp);
+      font-size: 0.9rem;
+      color: var(--pink);
+    }
+    .qty-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--border-pink);
+      background: white;
+      color: var(--pink);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .qty-btn:hover {
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white; border-color: transparent;
+    }
+    .qty-num {
+      font-family: var(--font-jp);
+      font-size: 1.1rem;
+      color: var(--pink);
+      min-width: 28px;
+      text-align: center;
+    }
+
+    /* ボタン */
+    .detail-btn-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .btn-cart {
+      width: 100%;
+      padding: 16px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white;
+      font-family: var(--font-jp);
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(170,65,132,0.3);
+      letter-spacing: 0.05em;
+    }
+    .btn-cart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(170,65,132,0.4);
+    }
+    .btn-cart:active { transform: scale(0.98); }
+
+    .btn-back {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-pill);
+      border: 2px solid var(--border-pink);
+      background: white;
+      color: var(--pink);
+      font-family: var(--font-jp);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-back:hover {
+      background: rgba(255,240,250,0.9);
+      transform: translateY(-1px);
+    }
+
+    /* 注意書き */
+    .detail-notes {
+      font-family: var(--font-jp);
+      font-size: 0.8rem;
+      color: var(--pink);
+      opacity: 0.65;
+      line-height: 1.9;
+    }
+    .detail-notes p::before { content: '・'; }
+
+    /* トースト */
+    .toast {
+      position: fixed;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white;
+      font-family: var(--font-jp);
+      font-size: 1rem;
+      padding: 14px 32px;
+      border-radius: 50px;
+      box-shadow: 0 6px 24px rgba(170,65,132,0.35);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+      z-index: 999;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* 存在しない商品 */
+    .detail-notfound {
+      text-align: center;
+      padding: 80px 32px;
+      font-family: var(--font-jp);
+      color: var(--pink);
+    }
+    .detail-notfound h2 { font-size: 1.5rem; margin-bottom: 16px; }
+    .detail-notfound a {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 12px 32px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .detail-main { padding: 32px 16px 64px; }
+      .detail-layout { grid-template-columns: 1fr; gap: 32px; }
+      .detail-img-frame { max-width: 320px; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo-link">
+        <img src="./image/rogorogo.png" alt="HARURI ロゴ" class="logo-img" />
+      </a>
+      <nav class="global-nav">
+        <a href="index.html"   class="nav-btn">Top</a>
+        <a href="about.html"   class="nav-btn">About</a>
+        <a href="list.html"    class="nav-btn active">List</a>
+        <a href="gallery.html" class="nav-btn">Gallery</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.html"   class="nav-btn">Top</a>
+      <a href="about.html"   class="nav-btn">About</a>
+      <a href="list.html"    class="nav-btn active">List</a>
+      <a href="gallery.html" class="nav-btn">Gallery</a>
+      <a href="contact.html" class="nav-btn">Contact</a>
+    </div>
+  </header>
+
+  <!-- ===== メインコンテンツ ===== -->
+  <main class="detail-main" id="detailMain">
+    <!-- JSで動的に生成 -->
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo-wrap">
+        <img src="./image/rogorogo.png" alt="HARURI ロゴ" class="logo-img logo-img--footer" />
+        <span class="footer-brand">HARURI</span>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">☆Top☆</a>
+        <a href="about.html">☆About☆</a>
+        <a href="list.html">☆List☆</a>
+        <a href="gallery.html">☆Gallery☆</a>
+        <a href="contact.html">☆Contact☆</a>
+      </nav>
+      <div class="footer-sns">
+        <a href="#" class="sns-btn sns-x"  aria-label="X"><img src="./image/Xアイコン.png" alt="X"></a>
+        <a href="#" class="sns-btn sns-yt" aria-label="YouTube"><img src="./image/YouTubeアイコン.png" alt="YouTube"></a>
+        <a href="#" class="sns-btn sns-tt" aria-label="TikTok"><img src="./image/ティックトックアイコン.png" alt="TikTok"></a>
+        <a href="#" class="sns-btn sns-ig" aria-label="Instagram"><img src="./image/Instagramアイコン.png" alt="Instagram"></a>
+      </div>
+      <p class="footer-copy">©2026 HARURI All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <div class="petals-container" id="petalsContainer"></div>
+  <script src="script.js"></script>
+
+  <script>
+    /* ============================================================
+       商品データベース（list.htmlの商品と完全対応）
+       ============================================================ */
+    const PRODUCTS = {
+      "pierce-1": {
+        name: "春の新作　ピアス",
+        price: 1000,
+        img: "./image/ピアス.jpg",
+        cat: "ピアス",
+        desc: "春らしい色合いのレジンピアスです。ふんわりとしたパステルカラーが、コーデに甘さをプラスしてくれます。一点一点手作業で仕上げているため、微妙な色の揺らぎもハンドメイドならではの個性です。"
+      },
+      "pierce-2": {
+        name: "新作　ピアス",
+        price: 1000,
+        img: "./image/20230704_144628.jpg",
+        cat: "ピアス",
+        desc: "繊細なレジンと小さなパーツを組み合わせたピアスです。耳元でそっと揺れる軽やかなデザイン。日常使いにもぴったりです。"
+      },
+      "pierce-3": {
+        name: "新作　ピアス",
+        price: 1000,
+        img: "./image/20230704_150308.jpg",
+        cat: "ピアス",
+        desc: "透明感のあるレジンにやわらかなカラーを閉じ込めたピアスです。シンプルながらも存在感があり、どんなコーデにも馴染みます。"
+      },
+      "pierce-4": {
+        name: "№4　　ピアス",
+        price: 1000,
+        img: "./image/指輪丸.jpg",
+        cat: "ピアス",
+        desc: "まるで小さな宝石のようなレジンピアスです。光の加減で表情が変わる、ハンドメイドらしい一品です。"
+      },
+      "nuifuku-1": {
+        name: "ぬい服　チェック",
+        price: 1500,
+        img: "./image/猫服.jpg",
+        cat: "ぬい服",
+        desc: "ぬいぐるみ用のチェック柄のお洋服です。やわらかな布地で着脱しやすく、ぬいぐるみを可愛く着飾れます。サイズはぬいぐるみの種類によって確認が必要です。ご不明な場合はお気軽にお問い合わせください。"
+      },
+      "nuifuku-2": {
+        name: "ぬい服　黒チェック",
+        price: 1500,
+        img: "./image/黒チェック服.jpg",
+        cat: "ぬい服",
+        desc: "クールな黒チェック柄のぬいぐるみ用お洋服です。かっこかわいいスタイルが好きな方におすすめです。"
+      },
+      "nuifuku-3": {
+        name: "ぬい服　わらぼうし",
+        price: 2000,
+        img: "./image/わらぼうし.jpg",
+        cat: "ぬい服",
+        desc: "麦わら帽子モチーフのぬいぐるみアイテムです。夏のコーデにぴったりで、ぬいぐるみをおしゃれに演出します。"
+      },
+      "nuikomono-1": {
+        name: "ぬい小物　チョコ",
+        price: 800,
+        img: "./image/チョコ.jpg",
+        cat: "ぬい小物",
+        desc: "ぬいぐるみと一緒に飾れる、チョコレートモチーフの小物です。撮影小道具としてもとっても可愛いです♪"
+      },
+      "nuikomono-2": {
+        name: "ぬい小物　えん",
+        price: 800,
+        img: "./image/えん.jpg",
+        cat: "ぬい小物",
+        desc: "縁起物モチーフの可愛いぬい小物です。ぬいぐるみのそばに置くだけで写真映えします。"
+      },
+      "ring-1": {
+        name: "レジンリング",
+        price: 1200,
+        img: "./image/指輪丸.jpg",
+        cat: "リング",
+        desc: "透き通るレジンで作ったリングです。ナチュラルな存在感で、さりげなくおしゃれを楽しめます。サイズはフリーサイズ（調整可能）です。"
+      },
+      "ring-2": {
+        name: "レジンリング　まる",
+        price: 1200,
+        img: "./image/まる.jpg",
+        cat: "リング",
+        desc: "丸みのあるフォルムが愛らしいレジンリングです。ころんとしたシルエットが指元をかわいく見せてくれます。"
+      },
+      "accessory-1": {
+        name: "レジンアクセサリー",
+        price: 1000,
+        img: "./image/レジン.jpg",
+        cat: "アクセサリー",
+        desc: "レジンを使ったオリジナルアクセサリーです。透明感と色の深みが魅力で、一つひとつ丁寧に仕上げています。"
+      },
+      "accessory-2": {
+        name: "ゲームアクセサリー",
+        price: 1500,
+        img: "./image/ゲーム機.jpg",
+        cat: "アクセサリー",
+        desc: "ゲーム機モチーフのユニークなアクセサリーです。推し活グッズとしても、ゲーム好きな方へのプレゼントとしてもおすすめです。"
+      },
+      "other-1": {
+        name: "チャーム",
+        price: 600,
+        img: "./image/チャーム.jpg",
+        cat: "その他",
+        desc: "バッグやキーホルダーに付けられるチャームです。小さいけれど存在感のある、ハンドメイドならではの一点物です。"
+      },
+      "other-2": {
+        name: "その他アイテム",
+        price: 600,
+        img: "./image/ゆび.jpg",
+        cat: "その他",
+        desc: "HARURIのその他オリジナルアイテムです。日常にさりげなく溶け込む、やさしい雰囲気の一品です。"
+      }
+    };
+
+    /* ============================================================
+       ページ初期化
+       ============================================================ */
+    let qty = 1;
+
+    function init() {
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      const product = PRODUCTS[id];
+      const main = document.getElementById('detailMain');
+
+      if (!product) {
+        main.innerHTML = `
+          <div class="detail-notfound">
+            <h2>商品が見つかりませんでした</h2>
+            <p>URLが正しくないか、商品が削除された可能性があります。</p>
+            <a href="list.html">← 商品一覧に戻る</a>
+          </div>`;
+        return;
+      }
+
+      // ページタイトル更新
+      document.title = `${product.name} - HARURI`;
+
+      main.innerHTML = `
+        <!-- パンくず -->
+        <div class="breadcrumb">
+          <a href="index.html">Top</a>
+          <span>›</span>
+          <a href="list.html">List</a>
+          <span>›</span>
+          <span>${product.cat}</span>
+          <span>›</span>
+          <span>${product.name}</span>
+        </div>
+
+        <!-- メインレイアウト -->
+        <div class="detail-layout">
+
+          <!-- 左：画像 -->
+          <div class="detail-img-wrap">
+            <div class="detail-img-frame">
+              <img src="${product.img}" alt="${product.name}" onerror="this.style.display='none'">
+            </div>
+            <span class="detail-sparkle detail-sparkle--1">✦</span>
+            <span class="detail-sparkle detail-sparkle--2">✧</span>
+            <span class="detail-sparkle detail-sparkle--3">✦</span>
+          </div>
+
+          <!-- 右：情報 -->
+          <div class="detail-info">
+            <span class="detail-cat-badge">${product.cat}</span>
+            <h1 class="detail-name">${product.name}</h1>
+            <p class="detail-price">￥ ${product.price.toLocaleString()}</p>
+            <div class="detail-divider"></div>
+            <p class="detail-desc">${product.desc}</p>
+
+            <!-- 数量 -->
+            <div class="detail-qty-wrap">
+              <span class="detail-qty-label">数量</span>
+              <button class="qty-btn" onclick="changeQty(-1)">－</button>
+              <span class="qty-num" id="qtyNum">1</span>
+              <button class="qty-btn" onclick="changeQty(1)">＋</button>
+            </div>
+
+            <!-- ボタン -->
+            <div class="detail-btn-wrap">
+              <button class="btn-cart" onclick="addToCart('${id}')">🛒 カートに入れる</button>
+              <button class="btn-back" onclick="history.back()">← 商品一覧に戻る</button>
+            </div>
+
+            <!-- 注意書き -->
+            <div class="detail-notes">
+              <p>すべて手作業によるハンドメイド品です</p>
+              <p>色合いは撮影環境により若干異なる場合があります</p>
+              <p>ご入金確認後、3〜7日以内に発送いたします</p>
+              <p>オーダーについては<a href="contact.html" style="text-decoration:underline">Contact</a>よりご相談ください</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ============================================================
+       数量変更
+       ============================================================ */
+    function changeQty(diff) {
+      qty = Math.max(1, qty + diff);
+      document.getElementById('qtyNum').textContent = qty;
+    }
+
+    /* ============================================================
+       カートに追加
+       ============================================================ */
+    function addToCart(id) {
+      const product = PRODUCTS[id];
+      if (!product) return;
+
+      // localStorageから既存カートを取得
+      let cart = [];
+      try {
+        cart = JSON.parse(localStorage.getItem('haruriCart') || '[]');
+      } catch(e) { cart = []; }
+
+      // 同じ商品があれば数量を加算
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({
+          id,
+          name: product.name,
+          price: product.price,
+          img: product.img,
+          cat: product.cat,
+          qty
+        });
+      }
+
+      localStorage.setItem('haruriCart', JSON.stringify(cart));
+      showToast(`🌸 カートに追加しました！`);
+    }
+
+    /* ============================================================
+       トースト表示
+       ============================================================ */
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    init();
+  </script>
+</body>
+</html>

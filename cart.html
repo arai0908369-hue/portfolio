@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>カート - HARURI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Yomogi&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ===== カートページ専用スタイル ===== */
+    .cart-main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
+    }
+
+    /* ページタイトル */
+    .cart-title {
+      font-family: var(--font-en);
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      color: white;
+      text-shadow: 0px 4px 35px rgba(170,65,132,0.7), 2px 2px 0 rgba(200,100,180,0.4);
+      text-align: center;
+      margin-bottom: 48px;
+      animation: fadeInUp 0.7s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    .cart-title-cap { font-size: 1.5em; display: inline-block; }
+
+    /* カラのカート */
+    .cart-empty {
+      text-align: center;
+      padding: 60px 32px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 24px;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 0.6s 0.1s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    .cart-empty-icon { font-size: 3.5rem; margin-bottom: 16px; }
+    .cart-empty p {
+      font-family: var(--font-jp);
+      color: var(--pink);
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+      opacity: 0.8;
+    }
+    .btn-to-list {
+      display: inline-block;
+      padding: 14px 40px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white;
+      font-family: var(--font-jp);
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(170,65,132,0.3);
+      text-decoration: none;
+    }
+    .btn-to-list:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(170,65,132,0.4);
+    }
+
+    /* カートアイテムリスト */
+    .cart-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+      animation: fadeInUp 0.6s 0.05s cubic-bezier(0.4,0,0.2,1) both;
+    }
+
+    /* 各アイテム */
+    .cart-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 16px;
+      align-items: center;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(170,65,132,0.1);
+      border: 1px solid rgba(230,150,201,0.2);
+      transition: var(--transition);
+    }
+    .cart-item:hover {
+      box-shadow: 0 6px 24px rgba(170,65,132,0.18);
+      transform: translateY(-1px);
+    }
+
+    /* 商品画像 */
+    .cart-item-img {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: rgba(255,255,255,0.5);
+      flex-shrink: 0;
+      box-shadow:
+        0 0 0 3px rgba(255,255,255,0.9),
+        0 0 0 5px rgba(230,150,201,0.3);
+    }
+    .cart-item-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+
+    /* 商品情報 */
+    .cart-item-info { min-width: 0; }
+    .cart-item-cat {
+      font-family: var(--font-jp);
+      font-size: 0.75rem;
+      color: white;
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      border-radius: 50px;
+      padding: 2px 10px;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+    .cart-item-name {
+      font-family: var(--font-jp);
+      font-size: 0.95rem;
+      color: var(--pink);
+      font-weight: 700;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cart-item-price {
+      font-family: var(--font-jp);
+      font-size: 0.9rem;
+      color: var(--pink);
+      opacity: 0.8;
+    }
+
+    /* 数量コントロール＆削除 */
+    .cart-item-ctrl {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .cart-qty-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cart-qty-btn {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--border-pink);
+      background: white;
+      color: var(--pink);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .cart-qty-btn:hover {
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white; border-color: transparent;
+    }
+    .cart-qty-num {
+      font-family: var(--font-jp);
+      font-size: 1rem;
+      color: var(--pink);
+      min-width: 24px;
+      text-align: center;
+    }
+    .cart-item-subtotal {
+      font-family: var(--font-jp);
+      font-size: 1rem;
+      color: var(--pink);
+      font-weight: 700;
+    }
+    .cart-delete-btn {
+      background: none;
+      border: none;
+      color: rgba(170,65,132,0.4);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-jp);
+      padding: 2px 6px;
+    }
+    .cart-delete-btn:hover { color: var(--pink); }
+
+    /* 合計エリア */
+    .cart-summary {
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 28px 32px;
+      box-shadow: 0 4px 20px rgba(170,65,132,0.12);
+      border: 1px solid rgba(230,150,201,0.25);
+      animation: fadeInUp 0.6s 0.1s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    .cart-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-jp);
+      color: var(--pink);
+      padding: 8px 0;
+    }
+    .cart-summary-row.total {
+      border-top: 2px solid rgba(230,150,201,0.3);
+      margin-top: 12px;
+      padding-top: 16px;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .cart-summary-row .label { opacity: 0.75; font-size: 0.9rem; }
+    .cart-summary-row.total .label { opacity: 1; font-size: 1.1rem; }
+
+    /* 購入ボタン */
+    .cart-checkout-wrap {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn-checkout {
+      width: 100%;
+      padding: 18px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white;
+      font-family: var(--font-jp);
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 24px rgba(170,65,132,0.35);
+      letter-spacing: 0.05em;
+    }
+    .btn-checkout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(170,65,132,0.45);
+    }
+    .btn-checkout:active { transform: scale(0.98); }
+
+    .btn-continue {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-pill);
+      border: 2px solid var(--border-pink);
+      background: white;
+      color: var(--pink);
+      font-family: var(--font-jp);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      display: block;
+      text-decoration: none;
+    }
+    .btn-continue:hover {
+      background: rgba(255,240,250,0.9);
+      transform: translateY(-1px);
+    }
+
+    /* お知らせ */
+    .cart-notice {
+      font-family: var(--font-jp);
+      font-size: 0.8rem;
+      color: var(--pink);
+      opacity: 0.6;
+      text-align: center;
+      margin-top: 16px;
+      line-height: 1.8;
+    }
+
+    /* カート上部のアイテム数バッジ */
+    .cart-count-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white;
+      font-family: var(--font-jp);
+      font-size: 0.85rem;
+      border-radius: 50px;
+      padding: 4px 14px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    /* モーダル（購入確認） */
+    .checkout-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(170,65,132,0.18);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .checkout-modal-overlay.open { display: flex; }
+    .checkout-modal {
+      background: rgba(255,255,255,0.97);
+      border-radius: 28px;
+      padding: 40px 40px 32px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(170,65,132,0.3);
+      animation: fadeInUp 0.4s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    .checkout-modal h2 {
+      font-family: var(--font-jp);
+      font-size: 1.4rem;
+      color: var(--pink);
+      margin-bottom: 12px;
+    }
+    .checkout-modal p {
+      font-family: var(--font-jp);
+      font-size: 0.95rem;
+      color: var(--pink);
+      opacity: 0.75;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    .checkout-modal-btns {
+      display: flex;
+      gap: 12px;
+    }
+    .modal-btn-contact {
+      flex: 1;
+      padding: 14px;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white;
+      font-family: var(--font-jp);
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-block;
+    }
+    .modal-btn-contact:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(170,65,132,0.3); }
+    .modal-btn-cancel {
+      flex: 1;
+      padding: 14px;
+      border-radius: var(--radius-pill);
+      border: 2px solid var(--border-pink);
+      background: white;
+      color: var(--pink);
+      font-family: var(--font-jp);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .modal-btn-cancel:hover { background: rgba(255,240,250,0.9); }
+
+    @media (max-width: 768px) {
+      .cart-main { padding: 32px 16px 64px; }
+      .cart-item { grid-template-columns: 64px 1fr; }
+      .cart-item-ctrl { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; align-items: center; border-top: 1px solid rgba(230,150,201,0.2); padding-top: 10px; margin-top: 4px; }
+      .cart-summary { padding: 20px 20px; }
+    }
+    @media (max-width: 480px) {
+      .cart-item { gap: 10px; padding: 14px 14px; }
+      .cart-item-img { width: 64px; height: 64px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo-link">
+        <img src="./image/rogorogo.png" alt="HARURI ロゴ" class="logo-img" />
+      </a>
+      <nav class="global-nav">
+        <a href="index.html"   class="nav-btn">Top</a>
+        <a href="about.html"   class="nav-btn">About</a>
+        <a href="list.html"    class="nav-btn">List</a>
+        <a href="gallery.html" class="nav-btn">Gallery</a>
+        <a href="contact.html" class="nav-btn">Contact</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.html"   class="nav-btn">Top</a>
+      <a href="about.html"   class="nav-btn">About</a>
+      <a href="list.html"    class="nav-btn">List</a>
+      <a href="gallery.html" class="nav-btn">Gallery</a>
+      <a href="contact.html" class="nav-btn">Contact</a>
+    </div>
+  </header>
+
+  <!-- ===== メインコンテンツ ===== -->
+  <main class="cart-main">
+
+    <h1 class="cart-title">
+      <span class="cart-title-cap">C</span>art
+      <span class="cart-count-badge" id="cartBadge"></span>
+    </h1>
+
+    <div id="cartContent">
+      <!-- JSで動的に生成 -->
+    </div>
+
+  </main>
+
+  <!-- ===== 購入確認モーダル ===== -->
+  <div class="checkout-modal-overlay" id="checkoutModal">
+    <div class="checkout-modal">
+      <h2>🌸 ご購入について</h2>
+      <p>
+        HARURIではオーナーへの直接連絡にてご注文を承っています。<br>
+        Contactページよりカート内容をお知らせいただくか、SNSのDMにてご連絡ください。
+      </p>
+      <div class="checkout-modal-btns">
+        <a href="contact.html" class="modal-btn-contact">Contactへ</a>
+        <button class="modal-btn-cancel" onclick="closeCheckoutModal()">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo-wrap">
+        <img src="./image/rogorogo.png" alt="HARURI ロゴ" class="logo-img logo-img--footer" />
+        <span class="footer-brand">HARURI</span>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">☆Top☆</a>
+        <a href="about.html">☆About☆</a>
+        <a href="list.html">☆List☆</a>
+        <a href="gallery.html">☆Gallery☆</a>
+        <a href="contact.html">☆Contact☆</a>
+      </nav>
+      <div class="footer-sns">
+        <a href="#" class="sns-btn sns-x"  aria-label="X"><img src="./image/Xアイコン.png" alt="X"></a>
+        <a href="#" class="sns-btn sns-yt" aria-label="YouTube"><img src="./image/YouTubeアイコン.png" alt="YouTube"></a>
+        <a href="#" class="sns-btn sns-tt" aria-label="TikTok"><img src="./image/ティックトックアイコン.png" alt="TikTok"></a>
+        <a href="#" class="sns-btn sns-ig" aria-label="Instagram"><img src="./image/Instagramアイコン.png" alt="Instagram"></a>
+      </div>
+      <p class="footer-copy">©2026 HARURI All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <div class="petals-container" id="petalsContainer"></div>
+  <script src="script.js"></script>
+
+  <script>
+    /* ============================================================
+       カートのレンダリング
+       ============================================================ */
+    function getCart() {
+      try {
+        return JSON.parse(localStorage.getItem('haruriCart') || '[]');
+      } catch(e) { return []; }
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem('haruriCart', JSON.stringify(cart));
+    }
+
+    function render() {
+      const cart = getCart();
+      const badge = document.getElementById('cartBadge');
+      const content = document.getElementById('cartContent');
+
+      const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+      badge.textContent = totalQty > 0 ? `${totalQty}点` : '';
+
+      if (cart.length === 0) {
+        content.innerHTML = `
+          <div class="cart-empty">
+            <div class="cart-empty-icon">🛒</div>
+            <p>カートに商品がありません</p>
+            <a href="list.html" class="btn-to-list">商品一覧を見る</a>
+          </div>`;
+        return;
+      }
+
+      // アイテムリスト
+      const itemsHtml = cart.map((item, idx) => `
+        <div class="cart-item">
+          <a href="detail.html?id=${item.id}" class="cart-item-img">
+            <img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'">
+          </a>
+          <div class="cart-item-info">
+            <span class="cart-item-cat">${item.cat}</span>
+            <p class="cart-item-name">${item.name}</p>
+            <p class="cart-item-price">￥ ${item.price.toLocaleString()} × ${item.qty}</p>
+          </div>
+          <div class="cart-item-ctrl">
+            <div class="cart-qty-row">
+              <button class="cart-qty-btn" onclick="changeQty(${idx}, -1)">－</button>
+              <span class="cart-qty-num">${item.qty}</span>
+              <button class="cart-qty-btn" onclick="changeQty(${idx}, 1)">＋</button>
+            </div>
+            <p class="cart-item-subtotal">￥ ${(item.price * item.qty).toLocaleString()}</p>
+            <button class="cart-delete-btn" onclick="removeItem(${idx})">✕ 削除</button>
+          </div>
+        </div>
+      `).join('');
+
+      // 合計
+      const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      const shipping = subtotal >= 3000 ? 0 : 200; // 3000円以上送料無料（例）
+      const total = subtotal + shipping;
+
+      content.innerHTML = `
+        <div class="cart-list">${itemsHtml}</div>
+        <div class="cart-summary">
+          <div class="cart-summary-row">
+            <span class="label">小計</span>
+            <span>￥ ${subtotal.toLocaleString()}</span>
+          </div>
+          <div class="cart-summary-row">
+            <span class="label">送料${subtotal >= 3000 ? '（3,000円以上 送料無料）' : ''}</span>
+            <span>${shipping === 0 ? '無料' : `￥ ${shipping.toLocaleString()}`}</span>
+          </div>
+          <div class="cart-summary-row total">
+            <span class="label">合計</span>
+            <span>￥ ${total.toLocaleString()}</span>
+          </div>
+          <div class="cart-checkout-wrap">
+            <button class="btn-checkout" onclick="openCheckoutModal()">ご購入手続きへ ✦</button>
+            <a href="list.html" class="btn-continue">← 買い物を続ける</a>
+          </div>
+          <p class="cart-notice">
+            ※ お支払い方法・詳細はオーナーとのやり取りにてご確認ください<br>
+            ※ 送料は目安です。発送方法により変わる場合があります
+          </p>
+        </div>
+      `;
+    }
+
+    /* ============================================================
+       数量変更
+       ============================================================ */
+    function changeQty(idx, diff) {
+      const cart = getCart();
+      cart[idx].qty = Math.max(1, cart[idx].qty + diff);
+      saveCart(cart);
+      render();
+    }
+
+    /* ============================================================
+       アイテム削除
+       ============================================================ */
+    function removeItem(idx) {
+      const cart = getCart();
+      cart.splice(idx, 1);
+      saveCart(cart);
+      render();
+    }
+
+    /* ============================================================
+       購入確認モーダル
+       ============================================================ */
+    function openCheckoutModal() {
+      document.getElementById('checkoutModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('checkoutModal').addEventListener('click', function(e) {
+      if (e.target === this) closeCheckoutModal();
+    });
+
+    // 初期表示
+    render();
+  </script>
+</body>
+</html>
