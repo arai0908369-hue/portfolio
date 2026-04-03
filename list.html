@@ -8,6 +8,87 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Yomogi&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* カートアイコンをナビに追加 */
+    .cart-nav-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      height: 56px;
+      min-width: 80px;
+      border-radius: var(--radius-pill);
+      background: #FFFFFF;
+      font-family: var(--font-jp);
+      font-size: 1.2rem;
+      color: var(--pink);
+      cursor: pointer;
+      transition: var(--transition);
+      border: 3px solid var(--border-pink);
+      text-decoration: none;
+    }
+    .cart-nav-btn:hover {
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white; border-color: transparent;
+      box-shadow: 0 4px 20px rgba(170,65,132,0.3);
+      transform: translateY(-2px);
+    }
+    .cart-badge {
+      position: absolute;
+      top: -6px; right: -6px;
+      background: linear-gradient(135deg, #f0b8d8, #cca8e8);
+      color: white;
+      font-size: 0.7rem;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+    }
+
+    /* 画像リンク化のスタイル */
+    .list-img-link {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(170,65,132,0.15);
+      margin-bottom: 10px;
+      background: rgba(255,255,255,0.5);
+      transition: var(--transition);
+      position: relative;
+    }
+    .list-img-link:hover {
+      transform: scale(1.04);
+      box-shadow: 0 10px 28px rgba(170,65,132,0.25);
+    }
+    .list-img-link::after {
+      content: '詳細を見る ✦';
+      position: absolute; inset: 0;
+      background: rgba(230,130,195,0.42);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Yomogi', cursive;
+      font-size: 0.85rem;
+      color: white;
+      text-shadow: 0 2px 8px rgba(170,65,132,0.5);
+      opacity: 0;
+      transition: var(--transition);
+      border-radius: 50%;
+    }
+    .list-img-link:hover::after { opacity: 1; }
+    .list-img-link .list-img-inner {
+      width: 100%; height: 100%; position: relative;
+    }
+    .list-img-link img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+
+    /* 既存の .list-item の cursor を pointer に */
+    .list-item { cursor: default; }
+  </style>
 </head>
 <body>
 
@@ -22,6 +103,11 @@
         <a href="list.html"    class="nav-btn active">List</a>
         <a href="gallery.html" class="nav-btn">Gallery</a>
         <a href="contact.html" class="nav-btn">Contact</a>
+        <!-- カートボタン -->
+        <a href="cart.html" class="cart-nav-btn" id="cartNavBtn" aria-label="カート">
+          🛒
+          <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+        </a>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="メニュー">
         <span></span><span></span><span></span>
@@ -33,6 +119,7 @@
       <a href="list.html"    class="nav-btn active">List</a>
       <a href="gallery.html" class="nav-btn">Gallery</a>
       <a href="contact.html" class="nav-btn">Contact</a>
+      <a href="cart.html"    class="nav-btn">🛒 カート</a>
     </div>
   </header>
 
@@ -56,92 +143,122 @@
       <button class="list-tab" data-cat="other">その他</button>
     </div>
 
-    <!-- 商品グリッド（data-catで絞り込み） -->
+    <!-- 商品グリッド -->
     <div class="list-grid" id="listGrid">
 
       <!-- ピアス -->
       <div class="list-item" data-cat="pierce">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/ピアス.jpg" alt="ピアス" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=pierce-1" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/ピアス.jpg" alt="ピアス" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">春の新作　ピアス</p>
         <p class="list-price">￥ 1，000</p>
       </div>
       <div class="list-item" data-cat="pierce">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="ピアス2" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=pierce-2" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/20230704_144628.jpg" alt="ピアス2" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">新作　ピアス</p>
         <p class="list-price">￥ 1，000</p>
       </div>
       <div class="list-item" data-cat="pierce">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/20230704_150308.jpg" alt="ピアス3" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=pierce-3" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/20230704_150308.jpg" alt="ピアス3" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">新作　ピアス</p>
         <p class="list-price">￥ 1，000</p>
       </div>
       <div class="list-item" data-cat="pierce">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/指輪丸.jpg" alt="ピアス4" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=pierce-4" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/指輪丸.jpg" alt="ピアス4" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">№4　　ピアス</p>
         <p class="list-price">￥ 1，000</p>
       </div>
 
       <!-- ぬい服 -->
       <div class="list-item" data-cat="nuifuku">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/猫服.jpg" alt="ぬい服1" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=nuifuku-1" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/猫服.jpg" alt="ぬい服1" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">ぬい服　チェック</p>
         <p class="list-price">￥ 1，500</p>
       </div>
       <div class="list-item" data-cat="nuifuku">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/黒チェック服.jpg" alt="ぬい服2" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=nuifuku-2" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/黒チェック服.jpg" alt="ぬい服2" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">ぬい服　黒チェック</p>
         <p class="list-price">￥ 1，500</p>
       </div>
       <div class="list-item" data-cat="nuifuku">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/わらぼうし.jpg" alt="ぬい服3" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=nuifuku-3" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/わらぼうし.jpg" alt="ぬい服3" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">ぬい服　わらぼうし</p>
         <p class="list-price">￥ 2，000</p>
       </div>
 
       <!-- ぬい小物 -->
       <div class="list-item" data-cat="nuikomono">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/チョコ.jpg" alt="ぬい小物1" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=nuikomono-1" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/チョコ.jpg" alt="ぬい小物1" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">ぬい小物　チョコ</p>
         <p class="list-price">￥ 800</p>
       </div>
       <div class="list-item" data-cat="nuikomono">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/えん.jpg" alt="ぬい小物2" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=nuikomono-2" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/えん.jpg" alt="ぬい小物2" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">ぬい小物　えん</p>
         <p class="list-price">￥ 800</p>
       </div>
 
       <!-- リング -->
       <div class="list-item" data-cat="ring">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/指輪丸.jpg" alt="リング1" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=ring-1" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/指輪丸.jpg" alt="リング1" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">レジンリング</p>
         <p class="list-price">￥ 1，200</p>
       </div>
       <div class="list-item" data-cat="ring">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/まる.jpg" alt="リング2" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=ring-2" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/まる.jpg" alt="リング2" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">レジンリング　まる</p>
         <p class="list-price">￥ 1，200</p>
       </div>
 
       <!-- アクセサリー -->
       <div class="list-item" data-cat="accessory">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/レジン.jpg" alt="アクセサリー1" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=accessory-1" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/レジン.jpg" alt="アクセサリー1" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">レジンアクセサリー</p>
         <p class="list-price">￥ 1，000</p>
       </div>
       <div class="list-item" data-cat="accessory">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/ゲーム機.jpg" alt="アクセサリー2" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=accessory-2" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/ゲーム機.jpg" alt="アクセサリー2" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">ゲームアクセサリー</p>
         <p class="list-price">￥ 1，500</p>
       </div>
 
       <!-- その他 -->
       <div class="list-item" data-cat="other">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/チャーム.jpg" alt="その他1" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=other-1" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/チャーム.jpg" alt="その他1" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">チャーム</p>
         <p class="list-price">￥ 600</p>
       </div>
       <div class="list-item" data-cat="other">
-        <div class="list-img"><div class="list-img-inner"><img src="./image/ゆび.jpg" alt="その他2" onerror="this.style.display='none'"></div></div>
+        <a href="detail.html?id=other-2" class="list-img-link">
+          <div class="list-img-inner"><img src="./image/ゆび.jpg" alt="その他2" onerror="this.style.display='none'"></div>
+        </a>
         <p class="list-name">その他アイテム</p>
         <p class="list-price">￥ 600</p>
       </div>
@@ -180,14 +297,10 @@
     const items = document.querySelectorAll('.list-item');
 
     function switchTab(cat) {
-      // タブのアクティブ切り替え
       tabs.forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
-
-      // 商品の表示/非表示（アニメーション付き）
       items.forEach(item => {
         if (item.dataset.cat === cat) {
           item.style.display = '';
-          // フェードイン
           item.style.opacity = '0';
           item.style.transform = 'translateY(16px)';
           requestAnimationFrame(() => {
@@ -205,8 +318,21 @@
       tab.addEventListener('click', () => switchTab(tab.dataset.cat));
     });
 
-    // 初期表示：ピアス
     switchTab('pierce');
+
+    // カートバッジ更新
+    function updateCartBadge() {
+      try {
+        const cart = JSON.parse(localStorage.getItem('haruriCart') || '[]');
+        const total = cart.reduce((s, i) => s + i.qty, 0);
+        const badge = document.getElementById('cartBadge');
+        if (badge) {
+          badge.textContent = total;
+          badge.style.display = total > 0 ? 'flex' : 'none';
+        }
+      } catch(e) {}
+    }
+    updateCartBadge();
   </script>
 </body>
 </html>
