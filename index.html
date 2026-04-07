@@ -6,16 +6,594 @@
   <title>HARURI - 推しの色を、耳に。指に。首元に。</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Yomogi&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fascinate+Inline&family=Yomogi&family=Pacifico&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-	<link rel="icon" href="./image/rogorogo.png">
-	<link rel="apple-touch-icon" href="./image/image/rogorogo.png" />
+  <style>
+    /* ===== POP UPGRADE STYLES ===== */
+
+    /* Rainbow gradient util */
+    @keyframes rainbowShift {
+      0%   { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+    @keyframes floatY {
+      0%,100% { transform: translateY(0px) rotate(0deg); }
+      50%      { transform: translateY(-14px) rotate(2deg); }
+    }
+    @keyframes floatYR {
+      0%,100% { transform: translateY(0px) rotate(0deg); }
+      50%      { transform: translateY(-10px) rotate(-2deg); }
+    }
+    @keyframes popIn {
+      0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+      70%  { transform: scale(1.15) rotate(3deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes sparkle {
+      0%,100% { opacity:0; transform: scale(0.4) rotate(0deg); }
+      50%      { opacity:1; transform: scale(1.2) rotate(180deg); }
+    }
+    @keyframes marqueeLeft {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      40%     { transform: translateY(-8px); }
+      60%     { transform: translateY(-4px); }
+    }
+    @keyframes wobble {
+      0%,100% { transform: rotate(-3deg); }
+      50%     { transform: rotate(3deg); }
+    }
+    @keyframes pulseGlow {
+      0%,100% { box-shadow: 0 0 10px 2px rgba(246,114,182,0.4); }
+      50%     { box-shadow: 0 0 28px 10px rgba(168,85,247,0.5); }
+    }
+    @keyframes gradientBG {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes twinkle {
+      0%,100% { opacity:0.2; transform:scale(0.7); }
+      50%      { opacity:1; transform:scale(1.3); }
+    }
+    @keyframes slideInLeft {
+      from { opacity:0; transform:translateX(-60px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity:0; transform:translateX(60px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    @keyframes charPop {
+      0%   { opacity:0; transform:translateY(30px) scale(0.5) rotate(-10deg); }
+      60%  { transform:translateY(-6px) scale(1.1) rotate(3deg); }
+      100% { opacity:1; transform:translateY(0) scale(1) rotate(0deg); }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* ===== LOADING SCREEN ===== */
+    #loading-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(-45deg, #ff9de2, #ffb347, #a8edea, #c3cfe2, #f093fb);
+      background-size: 400% 400%;
+      animation: gradientBG 3s ease infinite;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    #loading-screen.hidden { opacity:0; pointer-events:none; transform:scale(1.05); }
+    .ld-content { position: relative; display:flex; align-items:center; justify-content:center; width:220px; height:220px; }
+    .ld-ring {
+      position:absolute; border-radius:50%; border: 4px solid transparent;
+    }
+    .ld-ring--outer {
+      width:200px; height:200px;
+      border-top-color: rgba(255,255,255,0.9);
+      border-right-color: rgba(255,255,255,0.6);
+      animation: spin 1.6s linear infinite;
+    }
+    .ld-ring--inner {
+      width:160px; height:160px;
+      border-bottom-color: rgba(255,255,255,0.9);
+      border-left-color: rgba(255,255,255,0.6);
+      animation: spin 1.1s linear infinite reverse;
+    }
+    .ld-center { position:absolute; text-align:center; }
+    .ld-heart { font-size:2rem; animation: bounce 1s ease infinite; }
+    .ld-brand {
+      font-family:'Pacifico', cursive; font-size:2rem;
+      color:white; text-shadow: 0 2px 14px rgba(0,0,0,0.2);
+      animation: popIn 0.7s 0.2s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    .ld-catch {
+      font-family:'Yomogi',cursive; font-size:0.85rem;
+      color:rgba(255,255,255,0.9); margin-top:4px;
+    }
+    .ld-bar-wrap {
+      width:260px; height:6px; background:rgba(255,255,255,0.3); border-radius:99px;
+      margin-top:28px; overflow:hidden;
+    }
+    .ld-bar {
+      height:100%; width:0%; border-radius:99px;
+      background:white; animation: ldBarFill 1.8s ease forwards;
+    }
+    @keyframes ldBarFill { to { width:100%; } }
+    .ld-bottom-text {
+      margin-top:16px; color:rgba(255,255,255,0.85);
+      font-family:'Yomogi',cursive; font-size:0.9rem;
+      animation: bounce 2s ease infinite;
+    }
+
+    /* ===== RAINBOW TICKER (new) ===== */
+    .rainbow-ticker {
+      overflow: hidden; white-space: nowrap;
+      background: linear-gradient(90deg,#ff9de2,#ffb347,#a8edea,#c3cfe2,#f093fb,#ff9de2);
+      background-size: 200% 100%;
+      animation: gradientBG 4s ease infinite;
+      padding: 10px 0; font-family:'Yomogi',cursive; font-size:1rem;
+      color: white; letter-spacing: 0.05em;
+    }
+    .ticker-inner {
+      display:inline-block;
+      animation: marqueeLeft 20s linear infinite;
+    }
+    .ticker-inner span { margin: 0 24px; }
+
+    /* ===== HERO UPGRADES ===== */
+    .hero { position:relative; overflow:hidden; }
+    .slider-outer { position:relative; width:100%; height:85vh; min-height:500px; max-height:800px; overflow:hidden; }
+    .hero-slides-inner { display:flex; width:500%; height:100%; transition:transform 0.7s cubic-bezier(0.4,0,0.2,1); will-change:transform; }
+    .hero-slide-card { flex-shrink:0; width:20%; height:100%; position:relative; overflow:hidden; }
+    .slide-img-block { position:absolute; inset:0; overflow:hidden; }
+    .slide-img-block img { width:100%; height:100%; object-fit:cover; display:block; transition: transform 8s ease; }
+    .hero-slide-card.active .slide-img-block img { transform: scale(1.06); }
+    .s-img1 { background:linear-gradient(160deg,#ffd6e7,#ffe5f0,#ffc8dd); }
+    .s-img2 { background:linear-gradient(160deg,#c8d0ff,#d0c8ff,#e0c8ff); }
+    .s-img3 { background:linear-gradient(160deg,#d0ffd8,#c8ffee,#b8ffdd); }
+    .s-img4 { background:linear-gradient(160deg,#fff0c8,#ffe8b0,#ffd890); }
+    .s-img5 { background:linear-gradient(160deg,#c8f0ff,#b8e8ff,#a8d8ff); }
+    .hero-slide-card::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(160deg,rgba(255,230,245,0.35) 0%,rgba(220,200,240,0.15) 40%,rgba(0,0,0,0) 70%);
+      pointer-events:none; z-index:1;
+    }
+
+    /* Floating emoji decorations over hero */
+    .hero-deco-emojis { position:absolute; inset:0; pointer-events:none; z-index:8; }
+    .hero-emoji {
+      position:absolute; font-size:1.8rem;
+      animation: floatY 4s ease-in-out infinite;
+      opacity:0.85;
+    }
+    .hero-emoji:nth-child(1) { left:5%;  top:15%; animation-duration:3.8s; font-size:1.4rem; }
+    .hero-emoji:nth-child(2) { right:8%; top:20%; animation-duration:4.5s; animation-delay:-1s; }
+    .hero-emoji:nth-child(3) { left:3%;  bottom:25%; animation-duration:5s; animation-delay:-2s; font-size:1.2rem; }
+    .hero-emoji:nth-child(4) { right:5%; bottom:30%; animation-duration:3.5s; animation-delay:-0.5s; font-size:1.3rem; }
+    .hero-emoji:nth-child(5) { left:12%; top:60%; animation-duration:4.2s; animation-delay:-3s; font-size:1rem; }
+    .hero-emoji:nth-child(6) { right:15%; top:65%; animation-duration:5.2s; animation-delay:-1.5s; font-size:1rem; }
+
+    /* hero overlay text */
+    .hero-overlay-content {
+      position:absolute; top:50%; left:8%;
+      transform:translateY(-50%);
+      z-index:10; text-align:left;
+    }
+    .hero-title { margin-bottom:20px; }
+    .title-haruri {
+      font-family:'Pacifico',cursive;
+      font-size: clamp(3.5rem, 8vw, 8rem);
+      display:inline-block;
+      background: linear-gradient(135deg, #ff6eb4, #ff9a3c, #a855f7, #06b6d4);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientBG 4s ease infinite;
+      filter: drop-shadow(2px 4px 0px rgba(255,255,255,0.8));
+      padding: 4px 10px;
+    }
+    .hero-poem-area { display:flex; flex-direction:column; align-items:flex-start; gap:10px; }
+    .poem-tag {
+      background:rgba(255,255,255,0.92); border-radius:12px;
+      padding:5px 22px 10px 18px; font-family:'Yomogi',cursive;
+      font-size:clamp(1rem,2.5vw,1.8rem); color:var(--pink);
+      box-shadow:0 2px 14px rgba(170,65,132,0.15); display:inline-block;
+      backdrop-filter:blur(4px);
+      border-left: 4px solid;
+    }
+    .poem-tag:nth-child(1) { border-color: #ff6eb4; animation: slideInLeft 0.7s 0.4s both; }
+    .poem-tag:nth-child(2) { border-color: #a855f7; animation: slideInLeft 0.7s 0.65s both; }
+
+    /* SLIDER DOTS - colorful */
+    .slider-dots { display:flex; justify-content:center; gap:8px; padding:14px 0 6px; }
+    .dot {
+      width:10px; height:10px; border-radius:50%;
+      background:rgba(170,65,132,0.2); cursor:pointer; transition:all 0.3s;
+    }
+    .dot.active { transform:scale(1.5); }
+    .dot:nth-child(1).active { background:#ff6eb4; box-shadow:0 0 8px #ff6eb4; }
+    .dot:nth-child(2).active { background:#ffb347; box-shadow:0 0 8px #ffb347; }
+    .dot:nth-child(3).active { background:#a8edea; box-shadow:0 0 8px #a8edea; }
+    .dot:nth-child(4).active { background:#a855f7; box-shadow:0 0 8px #a855f7; }
+    .dot:nth-child(5).active { background:#06b6d4; box-shadow:0 0 8px #06b6d4; }
+
+    /* slider buttons */
+    .slider-btn {
+      position:absolute; top:50%; transform:translateY(-50%);
+      background:rgba(255,255,255,0.88); border:none; border-radius:50%;
+      width:52px; height:52px; cursor:pointer;
+      font-size:1.2rem; color:var(--pink);
+      display:flex; align-items:center; justify-content:center;
+      z-index:20; box-shadow:0 3px 14px rgba(0,0,0,0.13);
+      transition:var(--transition);
+    }
+    .slider-btn:hover {
+      background:white; transform:translateY(-50%) scale(1.12);
+      box-shadow:0 6px 24px rgba(170,65,132,0.3);
+    }
+    .slider-prev { left:16px; }
+    .slider-next { right:16px; }
+
+    /* ===== COPY SECTION ===== */
+    .copy-section {
+      padding:80px 40px;
+      background:rgba(255,248,255,0.8);
+      position:relative; overflow:hidden;
+    }
+    /* floating background shapes */
+    .copy-section::before {
+      content:''; position:absolute;
+      width:500px; height:500px; border-radius:50%;
+      background:radial-gradient(circle, rgba(255,150,210,0.12), transparent 70%);
+      top:-150px; right:-150px; pointer-events:none;
+    }
+    .copy-section::after {
+      content:''; position:absolute;
+      width:400px; height:400px; border-radius:50%;
+      background:radial-gradient(circle, rgba(168,85,247,0.1), transparent 70%);
+      bottom:-100px; left:-100px; pointer-events:none;
+    }
+    .copy-grid { max-width:1100px; margin:0 auto; display:flex; flex-direction:column; gap:80px; position:relative; z-index:1; }
+    .copy-block { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:56px; }
+    .copy-block.reverse { direction:rtl; }
+    .copy-block.reverse > * { direction:ltr; }
+    .copy-img-wrap { position:relative; }
+    .copy-img {
+      width:100%; aspect-ratio:1; border-radius:50%;
+      overflow:hidden; position:relative;
+      transition: transform 0.4s ease;
+    }
+    .copy-img:hover { transform:scale(1.04) rotate(2deg); }
+    .copy-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* colorful ring per block */
+    .copy-block:nth-child(1) .copy-img { box-shadow:0 0 0 8px #ffb6d9, 0 0 0 16px rgba(255,182,217,0.3), 0 12px 40px rgba(255,110,180,0.3); animation: pulseGlow 3s ease infinite; }
+    .copy-block:nth-child(2) .copy-img { box-shadow:0 0 0 8px #c4b5fd, 0 0 0 16px rgba(196,181,253,0.3), 0 12px 40px rgba(168,85,247,0.3); }
+    .copy-block:nth-child(3) .copy-img { box-shadow:0 0 0 8px #6ee7b7, 0 0 0 16px rgba(110,231,183,0.3), 0 12px 40px rgba(16,185,129,0.3); }
+
+    .copy-poem-bg {
+      background:rgba(255,255,255,0.88);
+      border-radius:24px; padding:32px 28px;
+      backdrop-filter:blur(8px);
+      position:relative; overflow:hidden;
+    }
+    .copy-block:nth-child(1) .copy-poem-bg {
+      border: 2px solid #ffb6d9;
+      background:linear-gradient(135deg,rgba(255,255,255,0.95),rgba(255,230,242,0.85));
+    }
+    .copy-block:nth-child(2) .copy-poem-bg {
+      border: 2px solid #c4b5fd;
+      background:linear-gradient(135deg,rgba(255,255,255,0.95),rgba(240,232,255,0.85));
+    }
+    .copy-block:nth-child(3) .copy-poem-bg {
+      border: 2px solid #6ee7b7;
+      background:linear-gradient(135deg,rgba(255,255,255,0.95),rgba(230,255,246,0.85));
+    }
+    .copy-poem-bg::before {
+      content:'✦'; position:absolute; top:12px; right:16px;
+      font-size:1.5rem; opacity:0.3; animation:sparkle 2s ease infinite;
+    }
+    .copy-text { font-family:'Yomogi',cursive; font-size:1.1rem; line-height:2; }
+    .copy-text p { margin-bottom:4px; }
+
+    /* Char animation class - applied via JS */
+    .char-anim {
+      display:inline-block;
+      opacity:0; animation:charPop 0.5s ease forwards;
+    }
+
+    /* flower dividers */
+    .copy-flower-divider { display:flex; align-items:center; gap:8px; margin:14px 0; }
+    .copy-flower-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(230,150,201,0.5),transparent); }
+
+    /* ===== CATEGORY BUBBLES (new section) ===== */
+    .category-section {
+      padding:60px 40px 40px;
+      background:linear-gradient(135deg,rgba(255,240,250,0.9),rgba(240,232,255,0.9),rgba(232,248,255,0.9));
+      background-size:300% 300%;
+      animation: gradientBG 8s ease infinite;
+    }
+    .category-title-wrap { text-align:center; margin-bottom:36px; }
+    .category-title {
+      font-family:'Pacifico',cursive; font-size:clamp(1.6rem,4vw,2.4rem);
+      background:linear-gradient(135deg,#ff6eb4,#a855f7,#06b6d4);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      display:inline-block;
+    }
+    .category-bubbles {
+      display:flex; flex-wrap:wrap; gap:16px; justify-content:center;
+      max-width:900px; margin:0 auto;
+    }
+    .cat-bubble {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:12px 28px; border-radius:999px; font-family:'Yomogi',cursive;
+      font-size:1.1rem; cursor:pointer; transition:all 0.3s ease;
+      text-decoration:none; position:relative; overflow:hidden;
+      font-weight:700;
+    }
+    .cat-bubble::before {
+      content:''; position:absolute; inset:0;
+      background:rgba(255,255,255,0.3); opacity:0; transition:opacity 0.3s;
+    }
+    .cat-bubble:hover::before { opacity:1; }
+    .cat-bubble:hover { transform:translateY(-5px) scale(1.06); }
+    .cat-bubble:nth-child(1) { background:linear-gradient(135deg,#ff9de2,#ffb347); color:white; box-shadow:0 6px 20px rgba(255,157,226,0.5); }
+    .cat-bubble:nth-child(2) { background:linear-gradient(135deg,#a8edea,#fed6e3); color:#444; box-shadow:0 6px 20px rgba(168,237,234,0.5); }
+    .cat-bubble:nth-child(3) { background:linear-gradient(135deg,#a18cd1,#fbc2eb); color:white; box-shadow:0 6px 20px rgba(161,140,209,0.5); }
+    .cat-bubble:nth-child(4) { background:linear-gradient(135deg,#f093fb,#f5576c); color:white; box-shadow:0 6px 20px rgba(240,147,251,0.5); }
+    .cat-bubble:nth-child(5) { background:linear-gradient(135deg,#4facfe,#00f2fe); color:white; box-shadow:0 6px 20px rgba(79,172,254,0.5); }
+    .cat-bubble:nth-child(6) { background:linear-gradient(135deg,#43e97b,#38f9d7); color:white; box-shadow:0 6px 20px rgba(67,233,123,0.5); }
+
+    /* ===== MEDIA SECTION ===== */
+    .media-section {
+      padding:60px 40px;
+      background:rgba(255,248,255,0.75); position:relative;
+    }
+    .media-deco { text-align:center; }
+    .media-deco-img { max-height:80px; mix-blend-mode:multiply; animation:floatY 4s ease-in-out infinite; }
+    .media-row {
+      display:flex; align-items:center; gap:32px;
+      max-width:900px; margin:28px auto; padding:20px 28px;
+      background:rgba(255,255,255,0.85); border-radius:20px;
+      text-decoration:none; cursor:pointer;
+      transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+      border:2px solid transparent;
+      position:relative; overflow:hidden;
+    }
+    .media-row::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(255,110,180,0.06),rgba(168,85,247,0.06));
+      opacity:0; transition:opacity 0.3s;
+    }
+    .media-row:hover::before { opacity:1; }
+    .media-row:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 40px rgba(170,65,132,0.18);
+      border-color:rgba(255,110,180,0.3);
+    }
+    .media-row--reverse { flex-direction:row-reverse; }
+    .media-row-thumb {
+      position:relative; flex-shrink:0;
+      width:180px; height:108px; border-radius:14px; overflow:hidden;
+    }
+    .media-row-photo { width:100%; height:100%; object-fit:cover; display:block; }
+    .media-row-bg { position:absolute; inset:0; }
+    .yt-thumb { background:linear-gradient(135deg,#ff6b6b,#ee0979); opacity:0.3; }
+    .tk-thumb { background:linear-gradient(135deg,#00f2ea,#ff0050); opacity:0.3; }
+    .media-play-btn {
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      width:44px; height:44px; border-radius:50%;
+      background:rgba(255,255,255,0.95); display:flex; align-items:center; justify-content:center;
+      font-size:1rem; color:var(--pink);
+      box-shadow:0 2px 14px rgba(0,0,0,0.2);
+      transition:all 0.3s;
+    }
+    .media-row:hover .media-play-btn { transform:translate(-50%,-50%) scale(1.15); background:white; }
+    .media-row-label {
+      font-family:'Yomogi',cursive; font-size:1.2rem; color:var(--pink);
+      font-weight:700; flex:1;
+    }
+
+    /* ===== EVENT SECTION - card style ===== */
+    .event {
+      padding:60px 40px;
+      background:linear-gradient(135deg,rgba(255,240,250,0.9),rgba(248,240,255,0.9));
+      position:relative; overflow:hidden;
+    }
+    .event::before {
+      content:'🎪'; position:absolute; top:-10px; left:20px; font-size:5rem; opacity:0.07;
+    }
+    .event-title {
+      font-family:'Pacifico',cursive; font-size:clamp(1.6rem,4vw,2.4rem);
+      text-align:center; margin-bottom:36px;
+      background:linear-gradient(135deg,#ff6eb4,#a855f7);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .event-list {
+      list-style:none; max-width:700px; margin:0 auto;
+      display:flex; flex-direction:column; gap:16px;
+    }
+    .event-list li {
+      display:flex; align-items:center; gap:20px;
+      padding:18px 28px; border-radius:16px;
+      background:rgba(255,255,255,0.9);
+      border-left:5px solid;
+      box-shadow:0 4px 16px rgba(170,65,132,0.1);
+      transition:all 0.3s ease;
+      cursor:default;
+    }
+    .event-list li:hover { transform:translateX(6px); box-shadow:0 8px 28px rgba(170,65,132,0.2); }
+    .event-list li:nth-child(1) { border-color:#ff6eb4; }
+    .event-list li:nth-child(2) { border-color:#a855f7; }
+    .event-list li:nth-child(3) { border-color:#06b6d4; }
+    .event-list li .date {
+      font-family:'Yomogi',cursive; font-size:1rem; color:#888; min-width:130px;
+    }
+    .event-list li .text {
+      font-family:'Yomogi',cursive; font-size:1.1rem; color:var(--pink); font-weight:700; flex:1;
+    }
+    .event-badge {
+      padding:4px 12px; border-radius:999px; font-size:0.75rem; font-family:'Yomogi',cursive;
+      font-weight:700; color:white;
+    }
+    .event-list li:nth-child(1) .event-badge { background:linear-gradient(135deg,#ff9de2,#ff6eb4); }
+    .event-list li:nth-child(2) .event-badge { background:linear-gradient(135deg,#c4b5fd,#a855f7); }
+    .event-list li:nth-child(3) .event-badge { background:linear-gradient(135deg,#67e8f9,#06b6d4); }
+
+    /* ===== GALLERY SECTION ===== */
+    .gallery-section {
+      padding:60px 0 30px;
+      background:rgba(255,248,255,0.8); overflow:hidden;
+    }
+    .section-header { text-align:center; margin-bottom:28px; }
+    .section-title {
+      font-family:'Pacifico',cursive; font-size:clamp(1.6rem,4vw,2.4rem);
+      background:linear-gradient(135deg,#ff6eb4,#a855f7,#06b6d4);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      animation:rainbowShift 4s linear infinite;
+    }
+    .gallery-outer { overflow:hidden; position:relative; }
+    .gallery-outer::before,.gallery-outer::after {
+      content:''; position:absolute; top:0; bottom:0; width:80px; z-index:10; pointer-events:none;
+    }
+    .gallery-outer::before { left:0; background:linear-gradient(to right,rgba(255,248,255,0.95),transparent); }
+    .gallery-outer::after  { right:0; background:linear-gradient(to left,rgba(255,248,255,0.95),transparent); }
+    .gallery-track {
+      display:flex; gap:16px; padding:16px 0;
+      animation:marqueeLeft 22s linear infinite;
+      width:max-content;
+    }
+    .gallery-track:hover { animation-play-state:paused; }
+    .gallery-item {
+      flex-shrink:0; cursor:pointer;
+      border-radius:18px; overflow:hidden;
+      transition:all 0.3s ease;
+      position:relative;
+    }
+    .gallery-item:hover { transform:translateY(-8px) scale(1.04); box-shadow:0 16px 40px rgba(170,65,132,0.3); }
+    .gallery-img {
+      width:220px; height:220px; position:relative;
+    }
+    .gallery-img img { width:100%; height:100%; object-fit:cover; display:block; }
+    /* colorful borders */
+    .g-img1 { box-shadow:inset 0 0 0 4px rgba(255,110,180,0.4); }
+    .g-img2 { box-shadow:inset 0 0 0 4px rgba(168,85,247,0.4); }
+    .g-img3 { box-shadow:inset 0 0 0 4px rgba(6,182,212,0.4); }
+    .g-img4 { box-shadow:inset 0 0 0 4px rgba(255,179,71,0.4); }
+    .g-img5 { box-shadow:inset 0 0 0 4px rgba(110,231,183,0.4); }
+    .g-img6 { box-shadow:inset 0 0 0 4px rgba(249,115,22,0.4); }
+
+    /* ===== SPARKLE CURSOR TRAIL ===== */
+    .cursor-sparkle {
+      position:fixed; pointer-events:none; z-index:9999;
+      font-size:1rem; animation:sparkle 0.7s ease forwards;
+    }
+
+    /* ===== NAV UPGRADES ===== */
+    .nav-btn {
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-btn:nth-child(1):hover, .nav-btn:nth-child(1).active { background:linear-gradient(135deg,#ff9de2,#ff6eb4); color:white; border-color:transparent; }
+    .nav-btn:nth-child(2):hover, .nav-btn:nth-child(2).active { background:linear-gradient(135deg,#f093fb,#a855f7); color:white; border-color:transparent; }
+    .nav-btn:nth-child(3):hover, .nav-btn:nth-child(3).active { background:linear-gradient(135deg,#a8edea,#06b6d4); color:white; border-color:transparent; }
+    .nav-btn:nth-child(4):hover, .nav-btn:nth-child(4).active { background:linear-gradient(135deg,#ffecd2,#fcb69f); color:#a0522d; border-color:transparent; }
+    .nav-btn:nth-child(5):hover, .nav-btn:nth-child(5).active { background:linear-gradient(135deg,#a1c4fd,#c2e9fb); color:#1a6b8a; border-color:transparent; }
+
+    /* ===== DOUBLE IMG ===== */
+    .copy-img-wrap--double { position:relative; aspect-ratio:1; }
+    .copy-double-imgs { position:relative; width:100%; height:100%; }
+    .copy-double-img { position:absolute; width:70%; aspect-ratio:1; border-radius:50%; overflow:hidden; }
+    .copy-double-img img { width:100%; height:100%; object-fit:cover; }
+    .copy-double-img--back  { top:0; right:0; box-shadow:0 0 0 8px #6ee7b7, 0 8px 28px rgba(16,185,129,0.2); animation:floatY 5s ease-in-out infinite; }
+    .copy-double-img--front { bottom:0; left:0; box-shadow:0 0 0 8px #fcd34d, 0 8px 28px rgba(251,191,36,0.3); animation:floatYR 4s ease-in-out infinite; z-index:2; }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      background:linear-gradient(135deg,rgba(255,236,248,0.97),rgba(243,232,255,0.97));
+      padding:48px 40px 28px; border-top:2px solid rgba(230,150,201,0.3);
+    }
+    .footer-inner { max-width:1200px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:24px; }
+    .footer-logo-wrap { display:flex; align-items:center; gap:12px; }
+    .footer-brand {
+      font-family:'Pacifico',cursive; font-size:1.6rem;
+      background:linear-gradient(135deg,#ff6eb4,#a855f7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .footer-nav { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+    .footer-nav a {
+      font-family:'Yomogi',cursive; color:var(--pink);
+      transition:all 0.3s; padding:4px 8px; border-radius:8px;
+    }
+    .footer-nav a:hover { color:#a855f7; background:rgba(168,85,247,0.08); transform:scale(1.1); }
+    .footer-sns { display:flex; gap:12px; }
+    .sns-btn { width:44px; height:44px; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; transition:all 0.3s; }
+    .sns-btn img { width:100%; height:100%; object-fit:cover; }
+    .sns-btn:hover { transform:scale(1.2) rotate(8deg); }
+    .sns-x:hover  { box-shadow:0 0 14px rgba(0,0,0,0.3); }
+    .sns-yt:hover { box-shadow:0 0 14px rgba(255,0,0,0.4); }
+    .sns-tt:hover { box-shadow:0 0 14px rgba(0,242,234,0.4); }
+    .sns-ig:hover { box-shadow:0 0 14px rgba(225,48,108,0.4); }
+    .footer-copy { font-family:'Yomogi',cursive; font-size:0.85rem; color:#bbb; }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position:fixed; inset:0; z-index:1000;
+      background:rgba(0,0,0,0.55); backdrop-filter:blur(6px);
+      display:none; align-items:center; justify-content:center;
+    }
+    .modal-overlay.open { display:flex; }
+    .modal-box {
+      background:rgba(255,255,255,0.97); border-radius:24px; padding:32px;
+      max-width:90vw; max-height:90vh; overflow:auto;
+      box-shadow:0 20px 60px rgba(0,0,0,0.2); position:relative;
+      animation:popIn 0.4s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    .modal-box--gallery { padding:20px; max-width:600px; }
+    .modal-close {
+      position:absolute; top:12px; right:16px;
+      background:none; border:none; font-size:1.4rem; cursor:pointer; color:#aaa;
+      transition:all 0.3s; line-height:1;
+    }
+    .modal-close:hover { color:var(--pink); transform:rotate(90deg) scale(1.2); }
+    .gallery-modal-img { border-radius:14px; overflow:hidden; }
+    .gallery-modal-img img { width:100%; display:block; }
+    .gallery-modal-label { text-align:center; margin-top:10px; font-family:'Yomogi',cursive; color:var(--pink); }
+    .gallery-modal-nav { display:flex; justify-content:center; gap:16px; margin-top:14px; }
+    .gallery-modal-nav button {
+      background:linear-gradient(135deg,#ff9de2,#a855f7); color:white;
+      border:none; width:44px; height:44px; border-radius:50%; cursor:pointer; font-size:1.1rem;
+      transition:all 0.3s;
+    }
+    .gallery-modal-nav button:hover { transform:scale(1.1); }
+
+    /* ===== PETALS ===== */
+    .petals-container { position:fixed; inset:0; pointer-events:none; z-index:999; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width:768px) {
+      .copy-block { grid-template-columns:1fr; gap:32px; }
+      .copy-block.reverse { direction:ltr; }
+      .copy-section { padding:48px 20px; }
+      .category-section { padding:40px 20px; }
+      .event { padding:40px 20px; }
+      .media-section { padding:40px 20px; }
+      .media-row { flex-direction:column; }
+      .media-row--reverse { flex-direction:column; }
+      .media-row-thumb { width:100%; height:160px; }
+      .global-nav { display:none; }
+      .hamburger { display:flex; }
+    }
+  </style>
 </head>
 <body>
 
   <!-- LOADING SCREEN -->
   <div id="loading-screen">
-    <canvas id="ldCanvas"></canvas>
     <div class="ld-content">
       <div class="ld-ring ld-ring--outer"></div>
       <div class="ld-ring ld-ring--inner"></div>
@@ -55,11 +633,29 @@
     </div>
   </header>
 
+  <!-- RAINBOW TICKER -->
+  <div class="rainbow-ticker">
+    <div class="ticker-inner">
+      <span>✦ 推しのカラーを纏う</span>
+      <span>🌸 ハンドメイドアクセサリー</span>
+      <span>✦ ぬい服 &amp; ぬい小物</span>
+      <span>💜 推しへの愛を形にする</span>
+      <span>✦ レジンアクセサリー</span>
+      <span>🌈 オーダーメイド受付中</span>
+      <span>✦ 推しのカラーを纏う</span>
+      <span>🌸 ハンドメイドアクセサリー</span>
+      <span>✦ ぬい服 &amp; ぬい小物</span>
+      <span>💜 推しへの愛を形にする</span>
+      <span>✦ レジンアクセサリー</span>
+      <span>🌈 オーダーメイド受付中</span>
+    </div>
+  </div>
+
   <!-- HERO -->
   <section class="hero" id="top">
     <div class="slider-outer">
       <div id="heroSlidesInner" class="hero-slides-inner">
-        <div class="hero-slide-card">
+        <div class="hero-slide-card active">
           <div class="slide-img-block s-img1"><img src="./image/nekomaru.jpg" alt="ねこまる"></div>
         </div>
         <div class="hero-slide-card">
@@ -77,6 +673,17 @@
       </div>
       <button class="slider-btn slider-prev" id="sliderPrev">&#10094;</button>
       <button class="slider-btn slider-next" id="sliderNext">&#10095;</button>
+
+      <!-- floating emojis -->
+      <div class="hero-deco-emojis">
+        <div class="hero-emoji">🌸</div>
+        <div class="hero-emoji">✨</div>
+        <div class="hero-emoji">💜</div>
+        <div class="hero-emoji">🌟</div>
+        <div class="hero-emoji">🎀</div>
+        <div class="hero-emoji">💫</div>
+      </div>
+
       <div class="hero-overlay-content">
         <h1 class="hero-title"><span class="title-haruri">Haruri</span></h1>
         <div class="hero-poem-area">
@@ -104,43 +711,13 @@
             <div class="copy-flower-divider copy-flower-divider--top">
               <div class="copy-flower-line"></div>
               <svg width="90" height="18" viewBox="0 0 90 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- 中央の花 -->
-                <g transform="translate(45,9)">
-                  <ellipse cx="0" cy="-5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="0" cy="5"  rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="5"  cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-3.5" cy="-3.5" rx="3" ry="5" transform="rotate(-45,-3.5,-3.5)" fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="-3.5" rx="3" ry="5" transform="rotate(45,3.5,-3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="-3.5" cy="3.5"  rx="3" ry="5" transform="rotate(45,-3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="3.5"  rx="3" ry="5" transform="rotate(-45,3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <circle cx="0" cy="0" r="3" fill="#fff0f8"/>
-                </g>
-                <!-- 左の小花 -->
-                <g transform="translate(22,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <!-- 右の小花 -->
-                <g transform="translate(68,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <!-- 小さいドット -->
-                <circle cx="35" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="55" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="10" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-                <circle cx="80" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
+                <g transform="translate(45,9)"><ellipse cx="0" cy="-5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/><ellipse cx="0" cy="5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/><ellipse cx="-5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/><ellipse cx="5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/><circle cx="0" cy="0" r="3" fill="#fff0f8"/></g>
+                <g transform="translate(22,9)"><ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/><ellipse cx="0" cy="4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/><ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/><ellipse cx="4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/><circle cx="0" cy="0" r="2.2" fill="#fff0f8"/></g>
+                <g transform="translate(68,9)"><ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/><ellipse cx="0" cy="4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/><ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/><ellipse cx="4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/><circle cx="0" cy="0" r="2.2" fill="#fff0f8"/></g>
               </svg>
               <div class="copy-flower-line"></div>
             </div>
-            <div class="copy-text">
+            <div class="copy-text anim-text">
               <p>推しの色を、耳に。指に。首元に。</p>
               <p>ただのアクセサリーじゃない</p>
               <p>それは、あなたの</p>
@@ -150,35 +727,7 @@
             <div class="copy-flower-divider copy-flower-divider--bottom">
               <div class="copy-flower-line"></div>
               <svg width="90" height="18" viewBox="0 0 90 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g transform="translate(45,9)">
-                  <ellipse cx="0" cy="-5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="0" cy="5"  rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="5"  cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-3.5" cy="-3.5" rx="3" ry="5" transform="rotate(-45,-3.5,-3.5)" fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="-3.5" rx="3" ry="5" transform="rotate(45,3.5,-3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="-3.5" cy="3.5"  rx="3" ry="5" transform="rotate(45,-3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="3.5"  rx="3" ry="5" transform="rotate(-45,3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <circle cx="0" cy="0" r="3" fill="#fff0f8"/>
-                </g>
-                <g transform="translate(22,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <g transform="translate(68,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <circle cx="35" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="55" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="10" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-                <circle cx="80" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
+                <g transform="translate(45,9)"><ellipse cx="0" cy="-5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/><ellipse cx="0" cy="5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/><ellipse cx="-5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/><ellipse cx="5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/><circle cx="0" cy="0" r="3" fill="#fff0f8"/></g>
               </svg>
               <div class="copy-flower-line"></div>
             </div>
@@ -196,44 +745,10 @@
           <div class="copy-poem-bg">
             <div class="copy-flower-divider copy-flower-divider--top">
               <div class="copy-flower-line"></div>
-              <svg width="90" height="18" viewBox="0 0 90 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- 中央の花 -->
-                <g transform="translate(45,9)">
-                  <ellipse cx="0" cy="-5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="0" cy="5"  rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="5"  cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-3.5" cy="-3.5" rx="3" ry="5" transform="rotate(-45,-3.5,-3.5)" fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="-3.5" rx="3" ry="5" transform="rotate(45,3.5,-3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="-3.5" cy="3.5"  rx="3" ry="5" transform="rotate(45,-3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="3.5"  rx="3" ry="5" transform="rotate(-45,3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <circle cx="0" cy="0" r="3" fill="#fff0f8"/>
-                </g>
-                <!-- 左の小花 -->
-                <g transform="translate(22,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <!-- 右の小花 -->
-                <g transform="translate(68,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <!-- 小さいドット -->
-                <circle cx="35" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="55" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="10" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-                <circle cx="80" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-              </svg>
+              <svg width="90" height="18" viewBox="0 0 90 18" fill="none"><g transform="translate(45,9)"><ellipse cx="0" cy="-5" rx="3" ry="5" fill="#c4b5fd" opacity="0.8"/><ellipse cx="0" cy="5" rx="3" ry="5" fill="#c4b5fd" opacity="0.8"/><ellipse cx="-5" cy="0" rx="5" ry="3" fill="#c4b5fd" opacity="0.8"/><ellipse cx="5" cy="0" rx="5" ry="3" fill="#c4b5fd" opacity="0.8"/><circle cx="0" cy="0" r="3" fill="#faf5ff"/></g></svg>
               <div class="copy-flower-line"></div>
             </div>
-            <div class="copy-text">
+            <div class="copy-text anim-text">
               <p>推しの隣に、いつだって連れていける</p>
               <p>ライブに、聖地に、日常のどこにでも</p>
               <p>Haruriのぬい服は、</p>
@@ -242,37 +757,7 @@
             </div>
             <div class="copy-flower-divider copy-flower-divider--bottom">
               <div class="copy-flower-line"></div>
-              <svg width="90" height="18" viewBox="0 0 90 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g transform="translate(45,9)">
-                  <ellipse cx="0" cy="-5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="0" cy="5"  rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="5"  cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-3.5" cy="-3.5" rx="3" ry="5" transform="rotate(-45,-3.5,-3.5)" fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="-3.5" rx="3" ry="5" transform="rotate(45,3.5,-3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="-3.5" cy="3.5"  rx="3" ry="5" transform="rotate(45,-3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="3.5"  rx="3" ry="5" transform="rotate(-45,3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <circle cx="0" cy="0" r="3" fill="#fff0f8"/>
-                </g>
-                <g transform="translate(22,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <g transform="translate(68,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <circle cx="35" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="55" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="10" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-                <circle cx="80" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-              </svg>
+              <svg width="90" height="18" viewBox="0 0 90 18" fill="none"><g transform="translate(45,9)"><ellipse cx="0" cy="-5" rx="3" ry="5" fill="#c4b5fd" opacity="0.8"/><ellipse cx="0" cy="5" rx="3" ry="5" fill="#c4b5fd" opacity="0.8"/><ellipse cx="-5" cy="0" rx="5" ry="3" fill="#c4b5fd" opacity="0.8"/><ellipse cx="5" cy="0" rx="5" ry="3" fill="#c4b5fd" opacity="0.8"/><circle cx="0" cy="0" r="3" fill="#faf5ff"/></g></svg>
               <div class="copy-flower-line"></div>
             </div>
           </div>
@@ -289,90 +774,24 @@
           <div class="copy-poem-bg">
             <div class="copy-flower-divider copy-flower-divider--top">
               <div class="copy-flower-line"></div>
-              <svg width="90" height="18" viewBox="0 0 90 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- 中央の花 -->
-                <g transform="translate(45,9)">
-                  <ellipse cx="0" cy="-5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="0" cy="5"  rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="5"  cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-3.5" cy="-3.5" rx="3" ry="5" transform="rotate(-45,-3.5,-3.5)" fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="-3.5" rx="3" ry="5" transform="rotate(45,3.5,-3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="-3.5" cy="3.5"  rx="3" ry="5" transform="rotate(45,-3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="3.5"  rx="3" ry="5" transform="rotate(-45,3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <circle cx="0" cy="0" r="3" fill="#fff0f8"/>
-                </g>
-                <!-- 左の小花 -->
-                <g transform="translate(22,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <!-- 右の小花 -->
-                <g transform="translate(68,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <!-- 小さいドット -->
-                <circle cx="35" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="55" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="10" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-                <circle cx="80" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-              </svg>
+              <svg width="90" height="18" viewBox="0 0 90 18" fill="none"><g transform="translate(45,9)"><ellipse cx="0" cy="-5" rx="3" ry="5" fill="#6ee7b7" opacity="0.8"/><ellipse cx="0" cy="5" rx="3" ry="5" fill="#6ee7b7" opacity="0.8"/><ellipse cx="-5" cy="0" rx="5" ry="3" fill="#6ee7b7" opacity="0.8"/><ellipse cx="5" cy="0" rx="5" ry="3" fill="#6ee7b7" opacity="0.8"/><circle cx="0" cy="0" r="3" fill="#f0fdf4"/></g></svg>
               <div class="copy-flower-line"></div>
             </div>
-            <div class="copy-text">
+            <div class="copy-text anim-text">
               <p>カバンを開けるたびに</p>
               <p>推しを感じる瞬間がある</p>
               <p>ちいさなチャームに込めた、</p>
               <p>おおきな「好き」。</p>
-              <p>現場も、日常も、</p>
-              <p>推しと一緒に彩ろう。</p>
+              <p>現場も、日常も、推しと一緒に彩ろう。</p>
             </div>
             <div class="copy-flower-divider copy-flower-divider--bottom">
               <div class="copy-flower-line"></div>
-              <svg width="90" height="18" viewBox="0 0 90 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g transform="translate(45,9)">
-                  <ellipse cx="0" cy="-5" rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="0" cy="5"  rx="3" ry="5" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-5" cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="5"  cy="0" rx="5" ry="3" fill="#E696C9" opacity="0.8"/>
-                  <ellipse cx="-3.5" cy="-3.5" rx="3" ry="5" transform="rotate(-45,-3.5,-3.5)" fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="-3.5" rx="3" ry="5" transform="rotate(45,3.5,-3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="-3.5" cy="3.5"  rx="3" ry="5" transform="rotate(45,-3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <ellipse cx="3.5"  cy="3.5"  rx="3" ry="5" transform="rotate(-45,3.5,3.5)"  fill="#f0c0de" opacity="0.7"/>
-                  <circle cx="0" cy="0" r="3" fill="#fff0f8"/>
-                </g>
-                <g transform="translate(22,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <g transform="translate(68,9)">
-                  <ellipse cx="0" cy="-4" rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="0" cy="4"  rx="2.2" ry="4" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="-4" cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <ellipse cx="4"  cy="0" rx="4" ry="2.2" fill="#E696C9" opacity="0.65"/>
-                  <circle cx="0" cy="0" r="2.2" fill="#fff0f8"/>
-                </g>
-                <circle cx="35" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="55" cy="9" r="1.5" fill="#E696C9" opacity="0.5"/>
-                <circle cx="10" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-                <circle cx="80" cy="9" r="1.2" fill="#f0b8d8" opacity="0.45"/>
-              </svg>
+              <svg width="90" height="18" viewBox="0 0 90 18" fill="none"><g transform="translate(45,9)"><ellipse cx="0" cy="-5" rx="3" ry="5" fill="#6ee7b7" opacity="0.8"/><ellipse cx="0" cy="5" rx="3" ry="5" fill="#6ee7b7" opacity="0.8"/><ellipse cx="-5" cy="0" rx="5" ry="3" fill="#6ee7b7" opacity="0.8"/><ellipse cx="5" cy="0" rx="5" ry="3" fill="#6ee7b7" opacity="0.8"/><circle cx="0" cy="0" r="3" fill="#f0fdf4"/></g></svg>
               <div class="copy-flower-line"></div>
             </div>
           </div>
         </div>
         <div class="copy-img-wrap copy-img-wrap--double">
-          <!-- 画像2枚を重ねたレイアウト -->
           <div class="copy-double-imgs">
             <div class="copy-double-img copy-double-img--back">
               <img src="./image/えん.jpg" alt="えん">
@@ -387,6 +806,21 @@
     </div>
   </section>
 
+  <!-- CATEGORY BUBBLES -->
+  <section class="category-section">
+    <div class="category-title-wrap fade-in">
+      <div class="category-title">✦ カテゴリから探す ✦</div>
+    </div>
+    <div class="category-bubbles">
+      <a href="list.html?cat=pierce"    class="cat-bubble fade-in"                  style="--delay:0.05s">👂 ピアス</a>
+      <a href="list.html?cat=nuifuku"   class="cat-bubble fade-in"                  style="--delay:0.1s">🧸 ぬい服</a>
+      <a href="list.html?cat=nuikomono" class="cat-bubble fade-in"                  style="--delay:0.15s">🎀 ぬい小物</a>
+      <a href="list.html?cat=ring"      class="cat-bubble fade-in"                  style="--delay:0.2s">💍 リング</a>
+      <a href="list.html?cat=accessory" class="cat-bubble fade-in"                  style="--delay:0.25s">✨ アクセサリー</a>
+      <a href="list.html?cat=other"     class="cat-bubble fade-in"                  style="--delay:0.3s">🌈 その他</a>
+    </div>
+  </section>
+
   <!-- MEDIA SECTION -->
   <section class="media-section" id="list">
     <div class="media-deco">
@@ -394,14 +828,14 @@
     </div>
     <a href="#" class="media-row fade-in" onclick="openModal('youtube'); return false;">
       <div class="media-row-thumb">
-        <img src="./image/samune.png" alt="TikTok配信live" class="media-row-photo" onerror="this.style.display='none'">
+        <img src="./image/samune.png" alt="YouTube制作風景" class="media-row-photo" onerror="this.style.display='none'">
         <div class="media-row-bg yt-thumb"></div>
         <div class="media-play-btn">▶</div>
       </div>
-      <p class="media-row-label">YouTube　制作風景</p>
+      <p class="media-row-label">🎬 YouTube　制作風景</p>
     </a>
     <a href="#" class="media-row media-row--reverse fade-in" style="--delay:0.14s" onclick="openModal('tiktok'); return false;">
-      <p class="media-row-label">TikTok　配信live</p>
+      <p class="media-row-label">📱 TikTok　配信live</p>
       <div class="media-row-thumb">
         <img src="./image/ペンチ.jpg" alt="TikTok配信live" class="media-row-photo" onerror="this.style.display='none'">
         <div class="media-row-bg tk-thumb"></div>
@@ -412,58 +846,52 @@
 
   <!-- EVENT -->
   <section class="event">
-    <p class="event-title">next　EVENT</p>
+    <p class="event-title">🎪 next EVENT</p>
     <ul class="event-list">
-      <li><span class="date">2026. 5. 5</span><span class="text">ハンドメイド展</span></li>
-      <li><span class="date">2026. 7. 1</span><span class="text">即売会</span></li>
-      <li><span class="date">2026. 10. 10</span><span class="text">ハンドメイド展</span></li>
+      <li>
+        <span class="date">2026. 5. 5</span>
+        <span class="text">ハンドメイド展</span>
+        <span class="event-badge">近日開催</span>
+      </li>
+      <li>
+        <span class="date">2026. 7. 1</span>
+        <span class="text">即売会</span>
+        <span class="event-badge">夏のイベント</span>
+      </li>
+      <li>
+        <span class="date">2026. 10. 10</span>
+        <span class="text">ハンドメイド展</span>
+        <span class="event-badge">秋のイベント</span>
+      </li>
     </ul>
   </section>
 
   <!-- GALLERY -->
   <section class="gallery-section" id="gallery">
-    <div class="section-header">
-      <h2 class="section-title">☆View ALL☆</h2>
+    <div class="section-header fade-in">
+      <h2 class="section-title">✦ View ALL ✦</h2>
     </div>
     <div class="gallery-outer">
       <div class="gallery-track" id="galleryTrack">
-        <div class="gallery-item size-main" onclick="openGalleryModal(0)"><div class="gallery-img g-img1"><img src="./image/指輪丸.jpg" alt="指輪丸"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(1)"><div class="gallery-img g-img2"><img src="./image/黒チェック服.jpg" alt="黒チェック"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(2)"><div class="gallery-img g-img3"><img src="./image/ゲーム機.jpg" alt="ゲーム"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(3)"><div class="gallery-img g-img4"><img src="./image/チョコ.jpg" alt="チョコ"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(4)"><div class="gallery-img g-img5"><img src="./image/わらぼうし.jpg" alt="わらぼうし"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(5)"><div class="gallery-img g-img6"><img src="./image/ピアス.jpg" alt="ピアス"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(6)"><div class="gallery-img g-img1"><img src="./image/猫服.jpg" alt="猫服"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(7)"><div class="gallery-img g-img2"><img src="./image/チャーム.jpg" alt="チャーム"></div></div>
-        <!-- 複製 -->
-        <div class="gallery-item size-main" onclick="openGalleryModal(0)"><div class="gallery-img g-img1"><img src="./image/指輪丸.jpg" alt="指輪丸"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(1)"><div class="gallery-img g-img2"><img src="./image/黒チェック服.jpg" alt="黒チェック"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(2)"><div class="gallery-img g-img3"><img src="./image/ゲーム機.jpg" alt="ゲーム"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(3)"><div class="gallery-img g-img4"><img src="./image/チョコ.jpg" alt="チョコ"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(4)"><div class="gallery-img g-img5"><img src="./image/わらぼうし.jpg" alt="わらぼうし"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(5)"><div class="gallery-img g-img6"><img src="./image/ピアス.jpg" alt="ピアス"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(6)"><div class="gallery-img g-img1"><img src="./image/猫服.jpg" alt="猫服"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(7)"><div class="gallery-img g-img2"><img src="./image/チャーム.jpg" alt="チャーム"></div></div>
-        <!-- 複製 -->
-        <div class="gallery-item size-main" onclick="openGalleryModal(0)"><div class="gallery-img g-img1"><img src="./image/指輪丸.jpg" alt="指輪丸"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(1)"><div class="gallery-img g-img2"><img src="./image/黒チェック服.jpg" alt="黒チェック"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(2)"><div class="gallery-img g-img3"><img src="./image/ゲーム機.jpg" alt="ゲーム"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(3)"><div class="gallery-img g-img4"><img src="./image/チョコ.jpg" alt="チョコ"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(4)"><div class="gallery-img g-img5"><img src="./image/わらぼうし.jpg" alt="わらぼうし"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(5)"><div class="gallery-img g-img6"><img src="./image/ピアス.jpg" alt="ピアス"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(6)"><div class="gallery-img g-img1"><img src="./image/猫服.jpg" alt="猫服"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(7)"><div class="gallery-img g-img2"><img src="./image/チャーム.jpg" alt="チャーム"></div></div>
-        <!-- 複製 -->
-        <div class="gallery-item size-main" onclick="openGalleryModal(0)"><div class="gallery-img g-img1"><img src="./image/指輪丸.jpg" alt="指輪丸"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(1)"><div class="gallery-img g-img2"><img src="./image/黒チェック服.jpg" alt="黒チェック"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(2)"><div class="gallery-img g-img3"><img src="./image/ゲーム機.jpg" alt="ゲーム"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(3)"><div class="gallery-img g-img4"><img src="./image/チョコ.jpg" alt="チョコ"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(4)"><div class="gallery-img g-img5"><img src="./image/わらぼうし.jpg" alt="わらぼうし"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(5)"><div class="gallery-img g-img6"><img src="./image/ピアス.jpg" alt="ピアス"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(6)"><div class="gallery-img g-img1"><img src="./image/猫服.jpg" alt="猫服"></div></div>
-        <div class="gallery-item size-main" onclick="openGalleryModal(7)"><div class="gallery-img g-img2"><img src="./image/チャーム.jpg" alt="チャーム"></div></div>
-		</div>
-		</div>
+        <div class="gallery-item" onclick="openGalleryModal(0)"><div class="gallery-img g-img1"><img src="./image/指輪丸.jpg" alt="指輪丸"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(1)"><div class="gallery-img g-img2"><img src="./image/黒チェック服.jpg" alt="黒チェック"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(2)"><div class="gallery-img g-img3"><img src="./image/ゲーム機.jpg" alt="ゲーム"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(3)"><div class="gallery-img g-img4"><img src="./image/チョコ.jpg" alt="チョコ"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(4)"><div class="gallery-img g-img5"><img src="./image/わらぼうし.jpg" alt="わらぼうし"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(5)"><div class="gallery-img g-img6"><img src="./image/ピアス.jpg" alt="ピアス"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(6)"><div class="gallery-img g-img1"><img src="./image/猫服.jpg" alt="猫服"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(7)"><div class="gallery-img g-img2"><img src="./image/チャーム.jpg" alt="チャーム"></div></div>
+        <!-- duplicate for seamless loop -->
+        <div class="gallery-item" onclick="openGalleryModal(0)"><div class="gallery-img g-img1"><img src="./image/指輪丸.jpg" alt="指輪丸"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(1)"><div class="gallery-img g-img2"><img src="./image/黒チェック服.jpg" alt="黒チェック"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(2)"><div class="gallery-img g-img3"><img src="./image/ゲーム機.jpg" alt="ゲーム"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(3)"><div class="gallery-img g-img4"><img src="./image/チョコ.jpg" alt="チョコ"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(4)"><div class="gallery-img g-img5"><img src="./image/わらぼうし.jpg" alt="わらぼうし"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(5)"><div class="gallery-img g-img6"><img src="./image/ピアス.jpg" alt="ピアス"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(6)"><div class="gallery-img g-img1"><img src="./image/猫服.jpg" alt="猫服"></div></div>
+        <div class="gallery-item" onclick="openGalleryModal(7)"><div class="gallery-img g-img2"><img src="./image/チャーム.jpg" alt="チャーム"></div></div>
+      </div>
+    </div>
   </section>
 
   <!-- FOOTER -->
@@ -513,5 +941,134 @@
 
   <div class="petals-container" id="petalsContainer"></div>
   <script src="script.js"></script>
+
+  <script>
+    // ===== LOADING SCREEN =====
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const ls = document.getElementById('loading-screen');
+        if (ls) { ls.classList.add('hidden'); setTimeout(() => ls.remove(), 700); }
+      }, 1900);
+    });
+
+    // ===== HERO SLIDER =====
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.hero-slide-card');
+    const dots = document.querySelectorAll('.dot');
+    const inner = document.getElementById('heroSlidesInner');
+    const total = slides.length;
+
+    function goSlide(n) {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (n + total) % total;
+      slides[currentSlide].classList.add('active');
+      inner.style.transform = `translateX(-${currentSlide * (100 / total)}%)`;
+      dots.forEach((d,i) => d.classList.toggle('active', i === currentSlide));
+    }
+
+    document.getElementById('sliderPrev').addEventListener('click', () => goSlide(currentSlide - 1));
+    document.getElementById('sliderNext').addEventListener('click', () => goSlide(currentSlide + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => goSlide(i)));
+    let autoSlide = setInterval(() => goSlide(currentSlide + 1), 4000);
+    document.querySelector('.slider-outer').addEventListener('mouseenter', () => clearInterval(autoSlide));
+    document.querySelector('.slider-outer').addEventListener('mouseleave', () => { autoSlide = setInterval(() => goSlide(currentSlide + 1), 4000); });
+
+    // ===== HAMBURGER =====
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        mobileNav.classList.toggle('open');
+      });
+    }
+
+    // ===== FADE IN =====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ===== CHAR ANIMATION for copy text =====
+    function animateText(el) {
+      const ps = el.querySelectorAll('p');
+      let delay = 0;
+      ps.forEach(p => {
+        const text = p.textContent;
+        p.innerHTML = '';
+        [...text].forEach(ch => {
+          const span = document.createElement('span');
+          span.className = 'char-anim';
+          span.textContent = ch === ' ' ? '\u00a0' : ch;
+          span.style.animationDelay = delay + 's';
+          delay += 0.03;
+          p.appendChild(span);
+        });
+        delay += 0.05;
+      });
+    }
+    const textObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateText(e.target);
+          textObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.anim-text').forEach(el => textObserver.observe(el));
+
+    // ===== MODALS =====
+    const mediaContent = { youtube: '<p style="font-family:\'Yomogi\',cursive;color:#AA4184;text-align:center;padding:20px">YouTube動画はこちら 🎬</p>', tiktok: '<p style="font-family:\'Yomogi\',cursive;color:#AA4184;text-align:center;padding:20px">TikTok動画はこちら 📱</p>' };
+    function openModal(type) {
+      const content = document.getElementById('mediaModalContent');
+      if (content) content.innerHTML = mediaContent[type] || '';
+      document.getElementById('mediaModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    const galleryImgs = [
+      { src:'./image/指輪丸.jpg', label:'花束リング' },
+      { src:'./image/黒チェック服.jpg', label:'ぬい服 黒チェック' },
+      { src:'./image/ゲーム機.jpg', label:'ゲームアクセサリー' },
+      { src:'./image/チョコ.jpg', label:'ぬい小物 チョコ' },
+      { src:'./image/わらぼうし.jpg', label:'ぬい服 麦わらぼうし' },
+      { src:'./image/ピアス.jpg', label:'春夏秋冬ピアス' },
+      { src:'./image/猫服.jpg', label:'ぬい服 白のもこもこ' },
+      { src:'./image/チャーム.jpg', label:'森のレジンキーホルダー' },
+    ];
+    let galleryIdx = 0;
+    function openGalleryModal(i) {
+      galleryIdx = i;
+      renderGalleryModal();
+      document.getElementById('galleryModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function renderGalleryModal() {
+      const img = galleryImgs[galleryIdx];
+      document.getElementById('galleryModalImg').innerHTML = `<img src="${img.src}" alt="${img.label}" onerror="this.style.display='none'">`;
+      document.getElementById('galleryModalLabel').textContent = img.label;
+    }
+    function changeGalleryModal(dir) {
+      galleryIdx = (galleryIdx + dir + galleryImgs.length) % galleryImgs.length;
+      renderGalleryModal();
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ===== SPARKLE CURSOR TRAIL =====
+    const sparkles = ['✦','✧','🌸','⭐','💫','✨','🌟'];
+    document.addEventListener('mousemove', (e) => {
+      if (Math.random() > 0.85) {
+        const s = document.createElement('div');
+        s.className = 'cursor-sparkle';
+        s.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+        s.style.cssText = `left:${e.clientX - 8}px;top:${e.clientY - 8}px;font-size:${0.7+Math.random()*0.8}rem;`;
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 700);
+      }
+    });
+  </script>
 </body>
 </html>
