@@ -80,7 +80,7 @@
     /* ===== LOADING SCREEN ===== */
     #loading-screen {
       position: fixed; inset: 0; z-index: 9999;
-      background: linear-gradient(-45deg, #ff9de2, #ffb347, #a8edea, #c3cfe2, #f093fb);
+      background: linear-gradient(-45deg, #ff9de2, #D8EEA6, #F8C0FB, #c3cfe2, #BFF0EC);
       background-size: 400% 400%;
       animation: gradientBG 3s ease infinite;
       display: flex; align-items: center; justify-content: center;
@@ -133,7 +133,7 @@
     /* ===== RAINBOW TICKER (new) ===== */
     .rainbow-ticker {
       overflow: hidden; white-space: nowrap;
-      background: linear-gradient(90deg,#ff9de2,#ffb347,#a8edea,#c3cfe2,#f093fb,#ff9de2);
+      background: linear-gradient(90deg,#ff9de2,#E0C8A5,#a8edea,#c3cfe2,#f093fb,#ff9de2);
       background-size: 200% 100%;
       animation: gradientBG 4s ease infinite;
       padding: 10px 0; font-family:'Yomogi',cursive; font-size:1rem;
@@ -356,7 +356,7 @@
       background:rgba(255,248,255,0.75); position:relative;
     }
     .media-deco { text-align:center; }
-    .media-deco-img { max-height:80px; mix-blend-mode:multiply; animation:floatY 4s ease-in-out infinite; }
+    .media-deco-img { max-height:1000px; mix-blend-mode:multiply; animation:floatY 4s ease-in-out infinite; }
     .media-row {
       display:flex; align-items:center; gap:32px;
       max-width:900px; margin:28px auto; padding:20px 28px;
@@ -429,9 +429,9 @@
       cursor:default;
     }
     .event-list li:hover { transform:translateX(6px); box-shadow:0 8px 28px rgba(170,65,132,0.2); }
-    .event-list li:nth-child(1) { border-color:#ff6eb4; }
-    .event-list li:nth-child(2) { border-color:#a855f7; }
-    .event-list li:nth-child(3) { border-color:#06b6d4; }
+    .event-list li:nth-child(1) { border-color:#a8edea,#fed6e3; }
+    .event-list li:nth-child(2) { border-color:#a8edea,#fed6e3; }
+    .event-list li:nth-child(3) { border-color:#a8edea,#fed6e3; }
     .event-list li .date {
       font-family:'Yomogi',cursive; font-size:1rem; color:#888; min-width:130px;
     }
@@ -440,11 +440,11 @@
     }
     .event-badge {
       padding:4px 12px; border-radius:999px; font-size:0.75rem; font-family:'Yomogi',cursive;
-      font-weight:700; color:white;
+      font-weight:700; color:#00f2ea,#ff0050;
     }
-    .event-list li:nth-child(1) .event-badge { background:linear-gradient(135deg,#ff9de2,#ff6eb4); }
-    .event-list li:nth-child(2) .event-badge { background:linear-gradient(135deg,#c4b5fd,#a855f7); }
-    .event-list li:nth-child(3) .event-badge { background:linear-gradient(135deg,#67e8f9,#06b6d4); }
+    .event-list li:nth-child(1) .event-badge { background:linear-gradient(135deg,#a8edea); }
+    .event-list li:nth-child(2) .event-badge { background:linear-gradient(135deg,#a8edea,#fed6e3); }
+    .event-list li:nth-child(3) .event-badge { background:linear-gradient(135deg,#a8edea,#fed6e3); }
 
     /* ===== GALLERY SECTION ===== */
     .gallery-section {
@@ -676,12 +676,12 @@
 
       <!-- floating emojis -->
       <div class="hero-deco-emojis">
-        <div class="hero-emoji">🌸</div>
-        <div class="hero-emoji">✨</div>
-        <div class="hero-emoji">💜</div>
         <div class="hero-emoji">🌟</div>
-        <div class="hero-emoji">🎀</div>
-        <div class="hero-emoji">💫</div>
+        <div class="hero-emoji">🌟</div>
+        <div class="hero-emoji">🌟</div>
+        <div class="hero-emoji">🌟</div>
+        <div class="hero-emoji">🌟</div>
+        <div class="hero-emoji">🌟</div>
       </div>
 
       <div class="hero-overlay-content">
@@ -792,9 +792,9 @@
           </div>
         </div>
         <div class="copy-img-wrap copy-img-wrap--double">
-          <div class="copy-double-imgs">
-            <div class="copy-double-img copy-double-img--back">
-              <img src="./image/えん.jpg" alt="えん">
+         <div class="copy-double-imgs">
+           
+            
             </div>
             <div class="copy-double-img copy-double-img--front">
               <img src="./image/チャーム.jpg" alt="チャーム">
@@ -803,7 +803,7 @@
         </div>
       </div>
 
-    </div>
+    
   </section>
 
   <!-- CATEGORY BUBBLES -->
