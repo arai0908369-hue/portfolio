@@ -175,33 +175,15 @@ document.addEventListener("DOMContentLoaded", function () {
       window.closeModal('galleryModal');
     }
   });
-
-  // ===== Petals =====
-  const createPetal = () => {
-    const container = document.getElementById('petalsContainer');
-    if (!container) return;
-
-    const petal = document.createElement('div');
-    petal.className = 'petal';
-    petal.style.left = Math.random() * 100 + 'vw';
-
-    container.appendChild(petal);
-    setTimeout(() => petal.remove(), 8000);
-  };
-
-  setInterval(createPetal, 2000);
-
-});
-
 // ===== Category Filter =====
 const params = new URLSearchParams(window.location.search);
 const category = params.get('cat');
 
 const items = document.querySelectorAll('.list-item');
 
-if (items.length) {
+if (items && items.length > 0 && category) {
   items.forEach(item => {
-    if (!category || item.dataset.cat === category) {
+    if (item.dataset.cat === category) {
       item.style.display = '';
     } else {
       item.style.display = 'none';
