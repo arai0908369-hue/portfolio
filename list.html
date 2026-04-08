@@ -327,12 +327,14 @@
         }
       });
     }
+	  	const params = new URLSearchParams(window.location.search);
+const category = params.get('cat');
+
+switchTab(category || 'pierce');
 
     tabs.forEach(tab => {
       tab.addEventListener('click', () => switchTab(tab.dataset.cat));
     });
-
-    switchTab('pierce');
 
     // カートバッジ更新
     function updateCartBadge() {
@@ -347,6 +349,7 @@
       } catch(e) {}
     }
     updateCartBadge();
+	  console.log(category);
   </script>
 </body>
 </html>
