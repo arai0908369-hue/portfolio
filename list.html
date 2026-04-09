@@ -332,7 +332,11 @@
       tab.addEventListener('click', () => switchTab(tab.dataset.cat));
     });
 
-    switchTab('pierce');
+    // URLパラメータからカテゴリを読み取って初期タブを決定
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get('cat');
+    const validCats = ['pierce','nuifuku','nuikomono','ring','accessory','other'];
+    switchTab(validCats.includes(catParam) ? catParam : 'pierce');
 
     // カートバッジ更新
     function updateCartBadge() {
