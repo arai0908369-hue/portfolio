@@ -455,12 +455,6 @@ a { text-decoration: none; color: inherit; }
 }
 .sns-btn img { width: 44px; height: 44px; object-fit: cover; display: block; border-radius: 50%; }
 .sns-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
-.sns-x  { background: #1a1a2e; }
-.sns-yt { background: #cc4466; }
-.sns-tt { background: #7766aa; }
-.sns-ig { background: linear-gradient(135deg, #f09040, #cc4488, #9944cc); }
-
-
 .footer-copy { font-family: var(--font-jp); font-size: 0.85rem; color: var(--pink); }
 
 /* MODALS */
